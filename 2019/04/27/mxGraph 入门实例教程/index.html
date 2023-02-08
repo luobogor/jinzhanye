@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="mxGraph 入门实例教程"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2019/04/27/mxGraph 入门实例教程/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>mxGraph 入门实例教程 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">mxGraph 入门实例教程
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-27
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/"
+             data-title="mxGraph 入门实例教程">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引入"><span class="toc-text">引入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-script-引入"><span class="toc-text">使用 script 引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块化引入"><span class="toc-text">模块化引入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cell"><span class="toc-text">Cell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事务"><span class="toc-text">事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#insertVertex"><span class="toc-text">insertVertex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mxGeometry"><span class="toc-text">mxGeometry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置样式"><span class="toc-text">设置样式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看样式效果小技巧"><span class="toc-text">查看样式效果小技巧</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#靶点"><span class="toc-text">靶点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#面向对象编程"><span class="toc-text">面向对象编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点组合"><span class="toc-text">节点组合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目实战"><span class="toc-text">项目实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#写一个节点组合"><span class="toc-text">写一个节点组合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#编辑内容"><span class="toc-text">编辑内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可换行的-label"><span class="toc-text">可换行的 label</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model"><span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件"><span class="toc-text">事件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#监听事件"><span class="toc-text">监听事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ADD-CELLS-与-CELLS-ADD-的区别"><span class="toc-text">ADD_CELLS 与 CELLS_ADD 的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#监听-Cell-添加事件"><span class="toc-text">监听 Cell 添加事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义事件"><span class="toc-text">自定义事件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#导出图片"><span class="toc-text">导出图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530160357.png" alt="Cover"></p>
+<p>在上一篇文章 <a href="https://yejinzhan.gitee.io/2019/03/21/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BB%98%E5%9B%BE%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B_jsPlumb_VS_mxGraph/" target="_blank" rel="noopener">《记一次绘图框架技术选型: jsPlumb VS mxGraph》</a> 中，提到了我为什么要去学习 mxGraph。在入门时我遇到了以下几个问题</p>
+<ul>
+<li>官方文档偏向理论，没能较好地结合代码进行讲解</li>
+<li>虽然官方给出的例子很多，但没有说明阅读顺序，对刚入门的我不知道应该从哪开始阅读</li>
+<li>通过搜索引擎搜索 “mxGraph教程” 没能得到太大帮助</li>
+</ul>
+<p>通过自己对着官方文档死磕了一段时间并在公司项目中进行实践后，慢慢开始掌握这个框架的使用。下面我就根据我的学习经验写一篇比较适合入门的文章。</p>
+<p><a href="https://jgraph.github.io/mxgraph/" target="_blank" rel="noopener">官方</a>列了比较多文档，其中下面这几份是比较有用的。</p>
+<ul>
+<li><a href="https://jgraph.github.io/mxgraph/docs/tutorial.html" target="_blank" rel="noopener">mxGraph Tutorial</a>，这份文档主要讲述整个框架的组成</li>
+<li><a href="https://jgraph.github.io/mxgraph/docs/manual.html" target="_blank" rel="noopener">mxGraph User Manual – JavaScript Client</a>，这份文档对一些重要的概念进行讲解，以及介绍一些重要的 API </li>
+<li><a href="https://jgraph.github.io/mxgraph/javascript/index.html" target="_blank" rel="noopener">在线实例</a>，这些实例的源码都在<a href="https://github.com/jgraph/mxgraph/tree/master/javascript/examples" target="_blank" rel="noopener">这里</a>有</li>
+<li><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/index-txt.html" target="_blank" rel="noopener">API 文档</a>，这是最重要的一份文档，在接下来的教程我不会对接口作详细讲述，你可以在这里对相关接口作深入了解</li>
+</ul>
+<p>在看完我的文章后希望系统地学习 mxGraph 还是要去阅读这些文档的，现在可以暂时不看。因为刚开始就堆这么多理论性的东西，对入门没有好处。</p>
+<p>这篇教程分为两部分，第一部分结合我写的<a href="https://github.com/jinzhanye/mxgraph-demos" target="_blank" rel="noopener">一些例子</a>讲解基础知识。第二部分则利用第一部分讲解的知识开发一个小项目 <a href="https://github.com/jinzhanye/pokemon-diagram" target="_blank" rel="noopener">pokemon-diagram</a>。本教程会使用到 ES6 语法，而第二部分的项目是用 Vue 写的。阅读本教程需要你掌握这两项预备知识。</p>
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><h3 id="使用-script-引入"><a href="#使用-script-引入" class="headerlink" title="使用 script 引入"></a>使用 script 引入</h3><p>我们来分析一下官方的 <a href="https://github.com/jgraph/mxgraph/blob/master/javascript/examples/helloworld.html" target="_blank" rel="noopener">HelloWorld</a> 实例是怎样通过 script 标签引入 mxGraph 的</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"graphContainer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">mxBasePath = <span class="string">'../src'</span>;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../src/js/mxClient.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">	<span class="comment">// ......</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先要声名一个全局变量 <code>mxBasePath</code> 指向一个路径，然后引入 mxGraph。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152148.jpeg" alt="2"></p>
+<p><code>mxBasePath</code> 指向的路径作为 mxGraph 的静态资源路径。上图是 HelloWorld 项目的 <code>mxBasePah</code>，这些资源除了 js 目录 ，其他目录下的资源都是 mxGraph 运行过程中所需要的，所以要在引入 mxGraph 前先设置 <code>mxBasePath</code>。 </p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152155.jpeg" alt="3"></p>
+<p>再来看看 javascript 目录下有两个 <code>mxClient.js</code> 版本。 一个在 <code>javascript/src/js/mxClient.js</code> ，另一个在 <code>javascript/mxClient.js</code>，后者是前者打包后的版本，所以两者是可以替换使用的。如果你的项目是使用 script 标签引入 mxGraph，可以参考<a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/01.helloworld.html" target="_blank" rel="noopener">我这个库</a>。</p>
+<h3 id="模块化引入"><a href="#模块化引入" class="headerlink" title="模块化引入"></a>模块化引入</h3><p>模块化引入可以参考 <a href="https://github.com/jinzhanye/pokemon-diagram" target="_blank" rel="noopener">pokemon-diagram</a> 的这个文件 <a href="https://github.com/jinzhanye/pokemon-diagram/blob/master/src/graph/index.js" target="_blank" rel="noopener">static/mxgraph/index.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*** 引入 mxgraph ***/</span></span><br><span class="line"><span class="comment">// src/graph/index.js</span></span><br><span class="line"><span class="keyword">import</span> mx <span class="keyword">from</span> <span class="string">'mxgraph'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mxgraph = mx(&#123;</span><br><span class="line">  mxBasePath: <span class="string">'/static/mxgraph'</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//fix BUG https://github.com/jgraph/mxgraph/issues/49</span></span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxGraph'</span>] = mxgraph.mxGraph;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxGraphModel'</span>] = mxgraph.mxGraphModel;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxEditor'</span>] = mxgraph.mxEditor;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxGeometry'</span>] = mxgraph.mxGeometry;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxDefaultKeyHandler'</span>] = mxgraph.mxDefaultKeyHandler;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxDefaultPopupMenu'</span>] = mxgraph.mxDefaultPopupMenu;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxStylesheet'</span>] = mxgraph.mxStylesheet;</span><br><span class="line"><span class="built_in">window</span>[<span class="string">'mxDefaultToolbar'</span>] = mxgraph.mxDefaultToolbar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mxgraph;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*** 在其他模块中使用 ***/</span></span><br><span class="line"><span class="comment">// src/graph/Graph.js</span></span><br><span class="line"><span class="keyword">import</span> mxgraph <span class="keyword">from</span> <span class="string">'./index'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  mxGraph,</span><br><span class="line">  mxVertexHandler,</span><br><span class="line">  mxConstants,</span><br><span class="line">  mxCellState,</span><br><span class="line">  <span class="comment">/*......*/</span></span><br><span class="line">&#125; = mxgraph;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里有两点需要注意的</p>
+<ul>
+<li><p><code>mx</code> 方法传入的配置项 <code>mxBasePath</code> 指向的路径一定要是一个可以通过 url 访问的静态资源目录。举个例子，pokemon-diagram 的 <a href="https://github.com/jinzhanye/pokemon-diagram/tree/master/static" target="_blank" rel="noopener">static 目录</a>是个静态资源目录，该目录下有 <code>mxgraph/css/common.css</code> 这么个资源，通过<code>http://localhost:7777</code> 可以访问 pokemon-diagram 应用，那么通过 <code>http://localhost:7777/static/mxgraph/css/common.css</code> 也应该是可以访问 <code>common.css</code> 才对</p>
+</li>
+<li><p>如果你是通过 script 标签引入 mxGraph，是不需要绑定全局变量那段代码的。模块化引入要使用这段代码是因为，mxGraph 这个框架有些代码是通过 window.mxXXX 对以上属性进行访问的，如果不做全局绑定使用起来会有点问题。这是官方一个未修复的 BUG，详情可以查阅上面代码注释的 issue</p>
+</li>
+</ul>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>这部分会使用到我自己编写的<a href="https://github.com/jinzhanye/mxgraph-demos" target="_blank" rel="noopener">一些例子</a>。大家可以先把代码下载下来，这些例子都是不需要使用 node 运行的，直接双击打开文件在浏览器运行即可。</p>
+<h3 id="Cell"><a href="#Cell" class="headerlink" title="Cell"></a>Cell</h3><p><code>Cell</code> 在 mxGraph 中可以代表<code>组(Group)</code>、<code>节点(Vertex)</code>、<code>边(Edge)</code>，<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxCell-js.html#mxCell.mxCell" target="_blank" rel="noopener">mxCell</a> 这个类封装了 <code>Cell</code> 的操作，本教程不涉及到<code>组</code>的内容。下文若出现 <code>Cell</code> 字眼可以当作 <code>节点</code> 或 <code>边</code>。</p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>官方的 <a href="https://github.com/jgraph/mxgraph/blob/master/javascript/examples/helloworld.html" target="_blank" rel="noopener">HelloWorld</a> 的例子向我们展示了如何将节点插入到画布。比较引人注意的是 <code>beginUpdate</code> 与 <code>endUpdate</code> 这两个方法，这两个方法在官方例子中出镜频率非常高，我们来了解一下他们是干嘛用的，嗯，真是只是了解一下就可以了，因为官方对两个方法的描述对入门者来说真的是比较晦涩难懂，而且我在实际开发中基本用不上这两个方法。可以等掌握这个框架基本使用后再回过头来研究。下面的描述来源这个<a href="https://jgraph.github.io/mxgraph/docs/tutorial.html" target="_blank" rel="noopener">文档</a>，我来简单概括一下有关这两个方法的相关信息。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153421.jpeg" alt="4_1"></p>
+<ul>
+<li><code>beginUpdate、endUpdate</code> 用于创建一个事务，一次 <code>beginUpdate</code> 必须对应一次 <code>endUpdate</code></li>
+<li>为了保证，假如 beginUpdate 执行失败，endUpdate 永远不会被调用，<code>beginUpdate 一定要放到 try 块之外</code></li>
+<li>为了保证，假如 try 块内更新失败，endUpdate 也一定被调用，<code>beginUpdate一定要放到 finally 块</code></li>
+<li>使用 beginUpdate 与 endUpdate 可提高更新视图性能，框架内部做撤消/重做管理也需要 beginUpdate、endUpdate</li>
+</ul>
+<p>按照官方这个说明，如果我不需要撤消/重做功能，是不是可以不使用这两个方法呢。我试着把这两个方法从 HelloWorld 例子的代码中删掉，结果程序还是可以正常运行。</p>
+<h3 id="insertVertex"><a href="#insertVertex" class="headerlink" title="insertVertex"></a>insertVertex</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mxGraph.prototype.insertVertex = <span class="function"><span class="keyword">function</span>(<span class="params">parent, id, value,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          x, y, width, height, style, relative</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置 Cell 尺寸及位置信息</span></span><br><span class="line">  <span class="keyword">var</span> geometry = <span class="keyword">new</span> mxGeometry(x, y, width, height);</span><br><span class="line">  geometry.relative = (relative != <span class="literal">null</span>) ? relative : <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 创建一个 Cell</span></span><br><span class="line">  <span class="keyword">var</span> vertex = <span class="keyword">new</span> mxCell(value, geometry, style);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// 标识这个 Cell 是一个节点</span></span><br><span class="line">  vertex.setVertex(<span class="literal">true</span>);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在画布上添加这个 Cell</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.addCell(vertex, parent);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面是经简化后的 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.insertVertex" target="_blank" rel="noopener">insertVertex</a> 方法。 insertVertex  做了三件事，先是设置几何信息，然后创建一个节点，最后将这个节点添加到画布。<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.insertEdge" target="_blank" rel="noopener">insertEdge</a> 与 insertVertex 类似，中间过程会调用 <code>vertex.setEdge(true)</code> 将 <code>Cell</code> 标记为边。从这里我们也可以得知无论<code>节点</code>还是<code>边</code>在 mxGraph 中都是由 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxCell-js.html#mxCell.mxCell" target="_blank" rel="noopener">mxCell</a> 类表示，只是在该类内部标识当前 <code>Cell</code> 是 <code>节点</code> 还是 <code>边</code>。</p>
+<h3 id="mxGeometry"><a href="#mxGeometry" class="headerlink" title="mxGeometry"></a>mxGeometry</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mxGeometry</span>(<span class="params">x,y,width,height</span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxGeometry-js.html#mxGeometry.mxGeometry" target="_blank" rel="noopener">mxGeometry</a> 类表示 <code>Cell</code> 的几何信息，宽高比较好理解，只对节点有意义，对边没意义。下面通过 <a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/02.geometry.html" target="_blank" rel="noopener">02.geometry.html</a> 这个例子说明如<code>x、y</code>的作用。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152211.jpeg" alt="4"></p>
+<p><code>mxGeometry</code> 还有一个很重要的布尔属性 <code>relative</code>，</p>
+<ul>
+<li><p><strong><code>relative</code> 为 <code>false</code> 的节点，表示以画布左上角为基点进行定位，<code>x、y</code> 使用的是<code>绝对单位</code></strong></p>
+<p>  上一小节提到 <code>insertVertex</code> 内部会创建 <code>mxGeometry</code> 类。使用 <code>mxGraph.insertVertex</code> 会创建一个 <code>mxGeometry.relative</code> 为 false 的节点，如 A 节点</p>
+<p>  <img src="https://gitee.com/yejinzhan/images/raw/master/20200530152616.png" alt="">    </p>
+</li>
+<li><p><strong><code>relative</code> 为 <code>true</code> 的节点，表示以父节点左上角为基点进行定位，<code>x、y</code> 使用的是<code>相对单位</code></strong></p>
+<p>  使用 <code>mxGraph.insertVertex</code> 会创建一个 relative 为 false 的节点。如果你要将一个节点添加到另一个节点中需要在该方法调用的第9个参数传入 <code>true</code>，将 <code>relative</code> 设置为 <code>true</code>。这时子节点使用相对坐标系，以父节点左上角作为基点，x、y 取值范围都是 <code>[-1,1]</code>。如 C节点 相对 B节点定位。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152709.png" alt="6"></p>
+<ul>
+<li><p><strong><code>relative</code> 为 <code>true</code> 的边，<code>x、y</code> 用于定位 label</strong></p>
+<p>  使用 <code>mxGraph.insertEdge</code> 会创建一条 relative 为 true 的边。x、y 用于定位线条上的 label，x 取值范围是 <code>[-1,1]</code>，<code>-1 为起点，0 为中点，1 为终点</code>。y 表示 label 在边的正交线上移到的距离。第三个例子能帮忙大家理解这种情况。<br><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152733.jpeg" alt="7"></p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> e1 = graph.insertEdge(parent, <span class="literal">null</span>, <span class="string">'30%'</span>, v1, v2);</span><br><span class="line">e1.geometry.x = <span class="number">1</span>;</span><br><span class="line">e1.geometry.y = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h3><p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152743.png" alt="8"></p>
+<p>由 <a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/03.stylesheet.html" target="_blank" rel="noopener">03.stylesheet.html</a> 这个例子我们得知 mxGraph 提供两种设置样式的方式。</p>
+<p>第一种是设置<code>全局样式</code>。<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html#mxStylesheet.mxStylesheet" target="_blank" rel="noopener">mxStylesheet</a> 类用于管理图形样式，通过 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.getStylesheet" target="_blank" rel="noopener">graph.getStylesheet()</a> 可以获取当前图形的 <code>mxStylesheet</code> 对象。<code>mxStylesheet</code> 对象的 <code>styles</code> 属性也是一个对象，该对象默认情况下包含两个对象<code>defaultVertexStyle、defaultEdgeStyle</code>，修改这两个对象里的样式属性<code>对所有线条/节点都生效</code>。</p>
+<p>第二种是<code>命名样式</code>。先创建一个样式对象，然后使用 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html#mxStylesheet.putCellStyle" target="_blank" rel="noopener">mxStylesheet.putCellStyle</a> 方法为 <code>mxStylesheet.styles</code> 添加该样式对象并命名。在添加 Cell 的时候，将样式写在参数中。格式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[stylename;|key&#x3D;value;]</span><br></pre></td></tr></table></figure>
+
+<p>分号前可以跟命名样式名称或者一个样式的 key、value 对。</p>
+<p><code>ROUNDED</code> 是一个内置的命名样式，对节点设置有圆角效果，对边设置则边的拐弯处为圆角。</p>
+<p>例子中设置折线有一个需要注意的地方。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置拖拽边的过程出现折线，默认为直线</span></span><br><span class="line">graph.connectionHandler.createEdgeState = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> edge = <span class="keyword">this</span>.createEdge();</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> mxCellState(graph.view, edge, graph.getCellStyle(edge));</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>虽然调用 <code>insertEdge</code> 方法时已经设置了线条为折线，但是在拖拽边过程中依然是直线。上面这段代码重写了 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/handler/mxConnectionHandler-js.html#mxConnectionHandler.createEdgeState" target="_blank" rel="noopener">createEdgeState</a> 方法，将拖动中的边样式设置成与静态时的边样式一致，都是折线。</p>
+<h4 id="查看样式效果小技巧"><a href="#查看样式效果小技巧" class="headerlink" title="查看样式效果小技巧"></a>查看样式效果小技巧</h4><p>mxGraph 所有样式在<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxConstants-js.html#mxConstants.STYLE_STROKECOLOR" target="_blank" rel="noopener">这里</a>可以查看，打开网站后可以看到以 <code>STYLE_</code> 开头的是样式常量。但是这些样式常量并不能展示样式的效果。下面教大家一个查看样式效果的小技巧，使用 <a href="https://www.draw.io/" target="_blank" rel="noopener">draw.io</a> 或 <a href="https://jgraph.github.io/mxgraph/javascript/examples/grapheditor/www/index.html" target="_blank" rel="noopener">GraphEditor</a> (这两个应用都是使用 mxGraph 进行开发的) 的 <code>Edit Style</code> 功能可以查看当前 Cell 样式。</p>
+<p>比如现在我想将边的样式设置成：折线、虚线、绿色、拐弯为圆角、粗3pt。在 Style 面板手动修改样式后，再点击 <code>Edit Style</code> 就可以看到对应的样式代码。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152828.jpeg" alt="9"></p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152757.jpeg" alt="10"></p>
+<p>为了方便观察我手动格式化了样式，注意最后一行以 <code>entry</code> 或 <code>exit</code> 开头的样式代表的是边出口/入口的靶点坐标，下一小节会进行讲解。</p>
+<h3 id="靶点"><a href="#靶点" class="headerlink" title="靶点"></a>靶点</h3><p>关于如何设置靶点可以参考 <a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/04.anchors.html" target="_blank" rel="noopener">04.anchors.html</a> ，下面也是以这个 Demo 进行讲解两个用户操作的例子，对比不同的操作对于获取靶点信息的影响。</p>
+<p>将鼠标悬浮中 A 节点中心，待节点高亮时连接到 B 节点的一个靶点上</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152901.jpeg" alt="11"></p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152907.jpeg" alt="12"></p>
+<p>然后将 A 节点拖拽到 B 节点右边</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152918.jpeg" alt="13"></p>
+<p>可以看到如果从图形中心拖出线条，这时边的出口值 <code>exit</code> 为空，只有入口值 <code>entry</code>。如果拖动节点 mxGraph 会智能地调整线条出口方向。如节点 A 的连接靶点原来是在右边，节点拖动到节点 B 右边后靶点也跟着发生了变化，跑到了左边，而节点 B 的连接靶点一直没变。</p>
+<p>这次将鼠标悬浮到 A 节点的一个靶点，待靶点高亮时连接到 B 节点的一个靶点上</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152929.jpeg" alt="14"></p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530152943.jpeg" alt="15"></p>
+<p>然后将 A 节点拖拽到 B 节点右边</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153000.jpeg" alt="16"></p>
+<p>可以看到这次所有值都有了，连接后拖动节点 A，连接靶点的位置也固定不变，mxGraph 不像第一个例子一样调整连接靶点位置。之所以产生这样的差异是因为第一个例子的边是从节点中心拖出的，并没有出口靶点的信息，而第二个例子则是明确地从一个靶点中拖出一条边。</p>
+<h3 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h3><p>mxGraph 框架是使用面向对象的方式进行编写的，该框架所有类带 mx 前缀。在接下来的例子你会看到很多这种形式的方法<code>重写(Overwrite)</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> oldBar =  mxFoo.prototype.bar;</span><br><span class="line">mxFoo.prototype.bar = <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>)=&gt; </span>&#123;</span><br><span class="line">   <span class="comment">// .....</span></span><br><span class="line">	oldBar.apply(<span class="keyword">this</span>,args);</span><br><span class="line">	<span class="comment">// .....</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="节点组合"><a href="#节点组合" class="headerlink" title="节点组合"></a>节点组合</h3><p>这一小节通过 <a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/05.consistuent.html" target="_blank" rel="noopener">05.consistuent.html</a> 这个例子，讲解节点组合需要注意的地方。</p>
+<p>组合节点后默认情况下，父节点是可折叠的，要关闭折叠功能需要将 <code>foldingEnabled</code> 设为 <code>false</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graph.foldingEnabled = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果希望在改变父节点尺寸时，子节点与父节点等比例缩放，需要开启 <code>recursiveResize</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graph.recursiveResize = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>下面是这个例子最重要的两段代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Redirects start drag to parent.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> getInitialCellForEvent = mxGraphHandler.prototype.getInitialCellForEvent;</span><br><span class="line">mxGraphHandler.prototype.getInitialCellForEvent = <span class="function"><span class="keyword">function</span> (<span class="params">me</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> cell = getInitialCellForEvent.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.graph.isPart(cell)) &#123;</span><br><span class="line">    cell = <span class="keyword">this</span>.graph.getModel().getParent(cell);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> cell;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Redirects selection to parent</span></span><br><span class="line">graph.selectCellForEvent = <span class="function"><span class="keyword">function</span> (<span class="params">cell</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.isPart(cell)) &#123;</span><br><span class="line">    mxGraph.prototype.selectCellForEvent.call(<span class="keyword">this</span>, <span class="keyword">this</span>.model.getParent(cell));</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  mxGraph.prototype.selectCellForEvent.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这两个方法<code>重写(Overwrite)</code>了原方法，思路都是判断如果该节点是子节点则替换成父节点去执行剩下的逻辑。</p>
+<p><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/handler/mxGraphHandler-js.html#mxGraphHandler.getInitialCellForEvent" target="_blank" rel="noopener">getInitialCellForEvent</a> 在鼠标按下(mousedown事件，不是click事件)时触发，如果注释掉这段代码，不使用父节点替换，当发生拖拽时子节点会被单独拖拽，不会与父节点联动。使用父节点替换后，原本子节点应该被拖拽，现在变成了父节点被拖拽，实现联动效果。</p>
+<p><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.selectCellForEvent" target="_blank" rel="noopener">selectCellForEvent</a> 其实是 <code>getInitialCellForEvent</code> 内部调用的一个方法。这个方法的作用是将 cell 设置为 <code>selectionCell</code>，设置后可通过 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.getSelectionCell" target="_blank" rel="noopener">mxGraph.getSelectionCell</a> 可获取得该节点。与 <code>getInitialCellForEvent</code> 同理，如果不使用父节点替换，则 <code>mxGraph.getSelectionCell</code> 获取到的会是子节点。项目实战我们会使用到 <code>mxGraph.getSelectionCell</code> 这个接口。</p>
+<h2 id="项目实战"><a href="#项目实战" class="headerlink" title="项目实战"></a>项目实战</h2><p>这部分我主要挑一些这个<a href="https://github.com/jinzhanye/pokemon-diagram" target="_blank" rel="noopener">项目</a>比较重要的点进行讲解。</p>
+<h3 id="写一个节点组合"><a href="#写一个节点组合" class="headerlink" title="写一个节点组合"></a>写一个节点组合</h3><p>下面以项目的这个节点为例，讲解如何组合节点</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153022.jpeg" alt="17"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> insertVertex = <span class="function">(<span class="params">dom</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">const</span> nodeRootVertex = <span class="keyword">new</span> mxCell(<span class="string">'鼠标双击输入'</span>, <span class="keyword">new</span> mxGeometry(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">135</span>), <span class="string">`node;image=<span class="subst">$&#123;src&#125;</span>`</span>);</span><br><span class="line">  nodeRootVertex.vertex = <span class="literal">true</span>;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> title = dom.getAttribute(<span class="string">'alt'</span>);</span><br><span class="line">  <span class="keyword">const</span> titleVertex = graph.insertVertex(nodeRootVertex, <span class="literal">null</span>, title,</span><br><span class="line">    <span class="number">0.1</span>, <span class="number">0.65</span>, <span class="number">80</span>, <span class="number">16</span>,</span><br><span class="line">    <span class="string">'constituent=1;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#e6a23c'</span>,</span><br><span class="line">    <span class="literal">true</span>);</span><br><span class="line">  titleVertex.setConnectable(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> normalTypeVertex = graph.insertVertex(nodeRootVertex, <span class="literal">null</span>, <span class="literal">null</span>,</span><br><span class="line">    <span class="number">0.05</span>, <span class="number">0.05</span>, <span class="number">19</span>, <span class="number">14</span>,</span><br><span class="line">    <span class="string">`normalType;constituent=1;fillColor=none;image=/static/images/normal-type/forest.png`</span>,</span><br><span class="line">    <span class="literal">true</span>);</span><br><span class="line">  normalTypeVertex.setConnectable(<span class="literal">false</span>);</span><br><span class="line">  <span class="comment">// .....</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>单单 <code>nodeRootVertex</code> 就是长这个样子。通过设置自定义的 <code>node</code> 样式(见 <a href="https://github.com/jinzhanye/pokemon-diagram/blob/master/src/graph/Graph.js" target="_blank" rel="noopener">Graph</a> 类 _putVertexStyle 方法)与 <code>image</code> 属性设置图片路径配合完成。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153031.jpeg" alt="18"></p>
+<p>因为默认情况下一个节点只能有一个文本区和一个图片区，要增加额外的文本和图片就需要组合节点。在 <code>nodeRootVertex</code> 上加上 <code>titleVertex</code> 文本节点和 <code>normalTypeVertex</code> 图片节点，最终达到这个效果。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153125.jpeg" alt="19"></p>
+<p>有时需要为不同子节点设置不同的鼠标悬浮图标，如本项目鼠标悬浮到 <code>normalTypeVertex</code> 时鼠标变为手形，参考 AppCanvas.vue 的 setCursor 方法，重写 <code>mxGraph.prototype.getCursorForCell</code> 可以实现这个功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> setCursor = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> oldGetCursorForCell = mxGraph.prototype.getCursorForCell;</span><br><span class="line">  graph.getCursorForCell = <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> [cell] = args;</span><br><span class="line">    <span class="keyword">return</span> cell.style.includes(<span class="string">'normalType'</span>) ?</span><br><span class="line">      <span class="string">'pointer'</span> :</span><br><span class="line">      oldGetCursorForCell.apply(<span class="keyword">this</span>, args);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编辑内容"><a href="#编辑内容" class="headerlink" title="编辑内容"></a>编辑内容</h4><p>下面这段代码是编辑内容比较常用的设置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编辑时按回车键不换行，而是完成输入</span></span><br><span class="line"><span class="keyword">this</span>.setEnterStopsCellEditing(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 编辑时按 escape 后完成输入</span></span><br><span class="line">mxCellEditor.prototype.escapeCancelsEditing = <span class="literal">false</span>;</span><br><span class="line"><span class="comment">// 失焦时完成输入</span></span><br><span class="line">mxCellEditor.prototype.blurEnabled = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下输入内容时如果按回车键内容会换行，但有些场景有禁止换行的需求，希望回车后完成输入，通过<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.setEnterStopsCellEditing" target="_blank" rel="noopener">graph.setEnterStopsCellEditing(true)</a> 设置可以满足需求。</p>
+<p>重点说说 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxCellEditor-js.html#mxCellEditor.blurEnabled" target="_blank" rel="noopener">mxCellEditor.prototype.blurEnabled</a> 这个属性，默认情况下如果用户在输入内容时鼠标点击了画布之外的不可聚焦区域(div、section、article等)，节点内的编辑器是不会失焦的，这导致了 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.mxEvent.LABEL_CHANGED" target="_blank" rel="noopener">LABEL_CHANGED</a> 事件不会被触发。但在实际项目开发中一般我们会期望，如果用户在输入内容时鼠标点击了画布之外的地方就应该算作完成一次输入，然后通过被触发的 <code>LABEL_CHANGED</code> 事件将修改后的内容同步到服务端。通过 <code>mxCellEditor.prototype.blurEnabled = true</code> 这行代码设置可以满足我们的需求。</p>
+<h4 id="可换行的-label"><a href="#可换行的-label" class="headerlink" title="可换行的 label"></a>可换行的 label</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> titleVertex = graph.insertVertex(nodeRootVertex, <span class="literal">null</span>, title,</span><br><span class="line">      <span class="number">0.1</span>, <span class="number">0.65</span>, <span class="number">80</span>, <span class="number">16</span>,</span><br><span class="line">      <span class="string">'constituent=1;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#e6a23c'</span>,</span><br><span class="line">      <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>对于非输入的文本内容，默认情况下即便文本超出容器宽度也是不会换行的。我们项目中宽度为 80 的 titleVertex 正是这样一个例子。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153148.jpeg" alt="20"></p>
+<p>要设置换行需要做两件事，第一是通过这行代码 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.setHtmlLabels" target="_blank" rel="noopener">mxGraph.setHtmlLabels(true)</a>，使用 html 渲染文本(mxGraph 默认使用 svg的text 标签渲染文本)。第二是像上面的 titleVertex 的样式设置一样，添加一句 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxConstants-js.html#mxConstants.STYLE_WHITE_SPACE" target="_blank" rel="noopener">whiteSpace=wrap</a>。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153159.jpeg" alt="21"></p>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>现在介绍一下 Model 这个概念，Model 是当前图形的数据结构化表示。<a href="https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxGraphModel-js.html" target="_blank" rel="noopener">mxGraphModel</a> 封装了 Model 的相关操作。</p>
+<p>你可以启动项目，画一个这样的图，然后点击输出XML。为了保的 xml 与下面的一致，需要先拖出智爷，再拖出超级皮卡丘，最后连接边。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153219.jpeg" alt="22"></p>
+<p>控制台应该输出这样一份 xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mxGraphModel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mxCell</span> <span class="attr">id</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mxCell</span> <span class="attr">id</span>=<span class="string">"1"</span> <span class="attr">parent</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mxCell</span> <span class="attr">id</span>=<span class="string">"4"</span> <span class="attr">value</span>=<span class="string">"Hello"</span> <span class="attr">style</span>=<span class="string">"node;image=/static/images/ele/ele-005.png"</span> <span class="attr">vertex</span>=<span class="string">"1"</span> <span class="attr">data</span>=<span class="string">"&#123;<span class="symbol">&amp;quot;</span>id<span class="symbol">&amp;quot;</span>:1,<span class="symbol">&amp;quot;</span>element<span class="symbol">&amp;quot;</span>:&#123;<span class="symbol">&amp;quot;</span>id<span class="symbol">&amp;quot;</span>:1,<span class="symbol">&amp;quot;</span>icon<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>ele-005.png<span class="symbol">&amp;quot;</span>,<span class="symbol">&amp;quot;</span>title<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>智爷<span class="symbol">&amp;quot;</span>&#125;,<span class="symbol">&amp;quot;</span>normalType<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>water.png<span class="symbol">&amp;quot;</span>&#125;"</span> <span class="attr">parent</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mxGeometry</span> <span class="attr">x</span>=<span class="string">"380"</span> <span class="attr">y</span>=<span class="string">"230"</span> <span class="attr">width</span>=<span class="string">"100"</span> <span class="attr">height</span>=<span class="string">"135"</span> <span class="attr">as</span>=<span class="string">"geometry"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mxCell</span>&gt;</span></span><br><span class="line">    ........</span><br><span class="line">  <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mxGraphModel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>每一个 mxCell 节点都有 parent 属性指向父节点。我们对 value=”Hello” 这个 mxCell 节点手动格式化。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mxCell</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"4"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">value</span>=<span class="string">"Hello"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">style</span>=<span class="string">"node;image=/static/images/ele/ele-005.png"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">vertex</span>=<span class="string">"1"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data</span>=<span class="string">"&#123;<span class="symbol">&amp;quot;</span>id<span class="symbol">&amp;quot;</span>:1,<span class="symbol">&amp;quot;</span>element<span class="symbol">&amp;quot;</span>:&#123;<span class="symbol">&amp;quot;</span>id<span class="symbol">&amp;quot;</span>:1,<span class="symbol">&amp;quot;</span>icon<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>ele-005.png<span class="symbol">&amp;quot;</span>,<span class="symbol">&amp;quot;</span>title<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>智爷<span class="symbol">&amp;quot;</span>&#125;,<span class="symbol">&amp;quot;</span>normalType<span class="symbol">&amp;quot;</span>:<span class="symbol">&amp;quot;</span>water.png<span class="symbol">&amp;quot;</span>&#125;"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">parent</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mxGeometry</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">x</span>=<span class="string">"380"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">y</span>=<span class="string">"230"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">width</span>=<span class="string">"100"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">height</span>=<span class="string">"135"</span> <span class="attr">as</span>=<span class="string">"geometry"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mxCell</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>data 值是原对象经 JSON.stringify 得到的，经转义后就变成了上面的样子。控制台还打印了一个 mxGraphModel 对象，对比上面的 xml 与 下图的节点对象，可以发现它们只是同一个 Model 的不同表现形式，xml 正是将 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.model" target="_blank" rel="noopener">mxGraph.model</a> 格式化而成的。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153229.jpeg" alt="23"></p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>本项目监听事件写在 <a href="https://github.com/jinzhanye/pokemon-diagram/blob/master/src/pages/AppCanvas.vue" target="_blank" rel="noopener">AppCanvas.vue</a> 的 _listenEvent 方法，可以在这个方法了解一些常用的事件。下图来自 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph" target="_blank" rel="noopener">mxGraph </a> 类的方法调用依赖图，我们可以从这里看出整个框架的事件流动。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153243.png" alt="24"></p>
+<h4 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h4><p>本项目的 _listenEvent 方法用到两个事件监听对象。</p>
+<ul>
+<li><p><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html" target="_blank" rel="noopener">mxGraph</a> 继承自 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxEventSource-js.html#mxEventSource.mxEventSource" target="_blank" rel="noopener">mxEventSource</a>，使用父类的 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxEventSource-js.html#mxEventSource.addListener" target="_blank" rel="noopener">addListener</a> 方法可以将自身当作一个事件中心进行订阅/广播事件。</p>
+</li>
+<li><p><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.getSelectionModel" target="_blank" rel="noopener">mxGraph.getSelectionModel()</a> 返回一个 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraphSelectionModel-js.html#mxGraphSelectionModel.mxGraphSelectionModel" target="_blank" rel="noopener">mxGraphSelectionModel</a> 对象，这个对象也是继承自 <code>mxEventSource</code> 有 <code>mxEvent.UNDO、mxEvent.CHANGE</code> 两个事件，通过监听 <code>mxEvent.CHANGE</code> 事件可以获取当前被选中的 <code>Cell</code>。</p>
+</li>
+</ul>
+<h4 id="ADD-CELLS-与-CELLS-ADD-的区别"><a href="#ADD-CELLS-与-CELLS-ADD-的区别" class="headerlink" title="ADD_CELLS 与 CELLS_ADD 的区别"></a>ADD_CELLS 与 CELLS_ADD 的区别</h4><p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530153315.jpeg" alt="26"></p>
+<p><code>mxGraph</code> 类有很多 <code>XXX_CELLS</code>、<code>CELLS_XXXED</code> 这种形式的事件，这部分我还没弄懂，下面仅以添加事件为例探讨这两类事件的区别。</p>
+<ul>
+<li>添加 <code>Cell</code> 的时候会触发两个事件 <code>ADD_CELLS</code>、<code>CELLS_ADDED</code>， 先触发 <code>CELLS_ADDED</code> 后触发 <code>ADD_CELLS</code>。</li>
+<li><code>ADD_CELLS</code> 在 <code>addCells</code> 方法中触发，而 <code>CELLS_ADDED</code> 在 <code>cellsAdded</code> 方法中触发。而对于 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.addCells" target="_blank" rel="noopener">addCells</a> 与 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.cellsAdded" target="_blank" rel="noopener">cellsAdded</a> 官方文档的说明并不能体现出两者的区别，再深究下去就要查阅源码了。按经验而言后触发的事件会携带更多的信息，所以平时开发我会监听 <code>ADD_CELLS</code> 事件。<code>MOVE_CELLS、CELLS_MOVED</code>、<code>REMOVE_CELLS、CELLS_REMOVED</code> 等事件与此类似。</li>
+</ul>
+<h4 id="监听-Cell-添加事件"><a href="#监听-Cell-添加事件" class="headerlink" title="监听 Cell 添加事件"></a>监听 Cell 添加事件</h4><p>从上面的方法调用依赖图中我们可以看到，<code>insertVertex</code>、<code>insertEdge</code> 最终都被当作 <code>Cell</code> 处理，在后续触发的事件也没有对 <code>节点/边</code> 进行区分，而是统一当作 <code>Cell</code> 事件。所以对于一个 <code>Cell</code> 添加事件，需要自己区别是添加了节点还是添加了边。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph.addListener(mxEvent.CELLS_ADDED, (sender, evt) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> cell = evt.properties.cells[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">if</span> (graph.isPart(cell)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (cell.vertex) &#123;</span><br><span class="line">    <span class="keyword">this</span>.$message.info(<span class="string">'添加了一个节点'</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cell.edge) &#123;</span><br><span class="line">    <span class="keyword">this</span>.$message.info(<span class="string">'添加了一条线'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>还有就是对于子节点添加到父节点的情况(如本项目将 titleVertex 、normalTypeVertex 添加到 nodeRootVertex)也是会触发 <code>Cell</code> 添加事件的。通常对于这些子节点不作处理，可以像 <a href="https://github.com/jinzhanye/mxgraph-demos/blob/master/src/05.consistuent.html" target="_blank" rel="noopener">05.consistuent.html</a> 一样用一个 <code>isPart</code> 判断过滤掉。</p>
+<h4 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h4><p>上面提到过 mxGraph 继承自 mxEventSource，调用父类的 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxEventSource-js.html#mxEventSource.mxEventSource" target="_blank" rel="noopener">fireEvent</a> 可触发自定义事件。下面是一个简单的例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mxGraph.addListener(<span class="string">'自定义事件A'</span>,()=&gt;&#123; </span><br><span class="line">  <span class="comment">// do something .....</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 触发自定义事件</span></span><br><span class="line">mxGraph.fireEvent(<span class="keyword">new</span> mxEventObject(<span class="string">'自定义事件A'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在本项目 <a href="https://github.com/jinzhanye/pokemon-diagram/blob/master/src/graph/Graph.js" target="_blank" rel="noopener">Graph</a> 类的 _configCustomEvent 方法我也实现了两个自定义事件。当边开始拖动时会触发 <code>EDGE_START_MOVE</code> 事件，当节点开始拖动时会触发 <code>VERTEX_START_MOVE</code> 事件。</p>
+<h3 id="导出图片"><a href="#导出图片" class="headerlink" title="导出图片"></a>导出图片</h3><p>mxGraph 导出图片的思路是先在前端导出图形的 xml 及计算图形的宽高，然后将 xml、宽、高，这有三项数据发送给服务端，服务端也使用 mxGraph 提供的 API 将 xml 转换成图片。服务端如果是使用 Java 可以参考官方这个<a href="https://github.com/jgraph/mxgraph/blob/master/java/test/com/mxgraph/test/mxImageExportTest.java" target="_blank" rel="noopener">例子</a>，下面主要介绍前端需要做的工作。</p>
+<p>导出图片可以使用 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxImageExport-js.html#mxImageExport.mxImageExport" target="_blank" rel="noopener">mxImageExport</a> 类，该类的文档有一段可以直接拿来使用的代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">var</span> xmlCanvas = <span class="keyword">new</span> mxXmlCanvas2D(root);</span><br><span class="line"><span class="keyword">var</span> imgExport = <span class="keyword">new</span> mxImageExport();</span><br><span class="line">imgExport.drawState(graph.getView().getState(graph.model.root), xmlCanvas);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bounds = graph.getGraphBounds();</span><br><span class="line"><span class="keyword">var</span> w = <span class="built_in">Math</span>.ceil(bounds.x + bounds.width);</span><br><span class="line"><span class="keyword">var</span> h = <span class="built_in">Math</span>.ceil(bounds.y + bounds.height);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> xml = mxUtils.getXml(root);</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>但这段代码会将整块画布截图，而不是以最左上角的元素及最右下角的元素作为边界截图。如果你有以元素作为边界的需求，则需要调用 <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxXmlCanvas2D-js.html#mxXmlCanvas2D.translate" target="_blank" rel="noopener">xmlCanvas.translate</a> 调整裁图边界。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//.....</span></span><br><span class="line"><span class="keyword">var</span> xmlCanvas = <span class="keyword">new</span> mxXmlCanvas2D(root);</span><br><span class="line">xmlCanvas.translate(</span><br><span class="line">      <span class="built_in">Math</span>.floor((border / scale - bounds.x) / scale),</span><br><span class="line">      <span class="built_in">Math</span>.floor((border / scale - bounds.y) / scale),</span><br><span class="line">    );</span><br><span class="line"><span class="comment">//.....</span></span><br></pre></td></tr></table></figure>
+
+<p>完整截图代码可以参考本项目 <a href="https://github.com/jinzhanye/pokemon-diagram/blob/master/src/graph/Graph.js" target="_blank" rel="noopener">Graph</a> 类的 exportPicXML 方法。</p>
+<p>如果节点像我的项目一样使用到图片，而导出来的图片的节点没有图片。可以从两个方向排查问题，先检查发送的 xml 里的图片路径是否是可访问的，如下面是项目“导出图片”功能打印的 xml 里的一个图片标签。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">image</span> <span class="attr">x</span>=<span class="string">"484"</span> <span class="attr">y</span>=<span class="string">"123"</span> <span class="attr">w</span>=<span class="string">"72"</span> <span class="attr">h</span>=<span class="string">"72"</span> <span class="attr">src</span>=<span class="string">"http://localhost:7777/static/images/ele/ele-005.png"</span> <span class="attr">aspect</span>=<span class="string">"0"</span> <span class="attr">flipH</span>=<span class="string">"0"</span> <span class="attr">flipV</span>=<span class="string">"0"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>要保证 <code>http://localhost:7777/static/images/ele/ele-005.png</code> 是可访问的。如果图片路径没问题再检查一下使用的图片格式，本来我在公司项目中节点内使用的图片是 svg 格式，导出图片失败，可能是 mxGraph 不支持这个格式，后来换成 png 之后问题就解决了。</p>
+<p>还有就是如果导出的图片里的节点的某些颜色跟设置的有差异，那可能是设置样式时写了3位数的颜色像 <code>#fff</code>，颜色一定要使用完整的6位，否则导出图片会有问题。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://jgraph.github.io/mxgraph/docs/tutorial.html" target="_blank" rel="noopener">mxGraph Tutorial</a></li>
+<li><a href="https://jgraph.github.io/mxgraph/docs/manual.html" target="_blank" rel="noopener">mxGraph User Manual – JavaScript Client</a></li>
+<li><a href="https://jgraph.github.io/mxgraph/docs/js-api/files/index-txt.html" target="_blank" rel="noopener">mxGraph API Specification</a></li>
+<li><a href="https://jgraph.github.io/mxgraph/javascript/index.html" target="_blank" rel="noopener">mxGraph Javascript Examples</a></li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/">http://yoursite.com/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2020/03/08/tinajs-source-code-analysis/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">小程序框架 Tina.js 源码分析</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/03/21/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BB%98%E5%9B%BE%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B_jsPlumb_VS_mxGraph/">
+        <span class="next-text nav-default">记一次绘图框架技术选型 - jsPlumb VS mxGraph</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

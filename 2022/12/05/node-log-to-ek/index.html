@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Node.js、Elasticsearch、Kibana 日志上报实战"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2022/12/05/node-log-to-ek/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>Node.js、Elasticsearch、Kibana 日志上报实战 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Node.js、Elasticsearch、Kibana 日志上报实战
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2022-12-05
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2022/12/05/node-log-to-ek/"
+             data-title="Node.js、Elasticsearch、Kibana 日志上报实战">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装-ES、Kibana"><span class="toc-text">安装 ES、Kibana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Node-日志上报到-ES"><span class="toc-text">Node 日志上报到 ES</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Kibana-查看日志"><span class="toc-text">使用 Kibana 查看日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装更好用的-SDK"><span class="toc-text">封装更好用的 SDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>要使用日志查询服务可以直接购买云厂商的，比如阿里云的 SLS、腾讯云的 CLS。 如果要自己实现日志上报，一般做法是这样的：</p>
+<ul>
+<li>用 Filebeat 从文件收集日志做日志过滤、清洗。</li>
+<li>Filebeat 处理后的日志发送到 Kafka 削峰处理。</li>
+<li>Logstash 从 Kafka 读取日志存储到 Elasticsearch（以下简称 ES）。</li>
+<li>开发者在 Kibana 进行日志查询。</li>
+</ul>
+<p><img src="/images/node-log-to-ek/img6.png" alt=""></p>
+<p>我们团队目前的需求是把内部 Node 服务日志上报到 ES，流量不大，所以采用简单的做法。Node 直接将日志存储到 ES，使用 Kibana 用可视化的方式进行 ES 查询日志。</p>
+<p><img src="/images/node-log-to-ek/img7.png" alt=""></p>
+<p>接下来将为大家介绍如何搭建这个架构，如何封装用户体验良好的 Node 日志上报 SDK。ES 有多个版本，本文以 7.17 为例进行讲解。</p>
+<h2 id="安装-ES、Kibana"><a href="#安装-ES、Kibana" class="headerlink" title="安装 ES、Kibana"></a>安装 ES、Kibana</h2><p>下面涉及到安装的步骤都以 MacOS 为例进行讲解，其他操作系统可以参考 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/targz.html" target="_blank" rel="noopener">《Set up Elasticsearch》</a> 进行操作。执行以下命令安装 ES。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew tap elastic/tap</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install elastic/tap/elasticsearch-full</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成，在控制台执行 <code>elasticsearch</code> 命令启动 ES，启动后如果能正常访问 <a href="http://localhost:9200" target="_blank" rel="noopener">http://localhost:9200</a> 表示启动成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl http://localhost:9200</span></span><br><span class="line">&#123;</span><br><span class="line">  "name" : "jinzhanyedeMacBook-Pro.local",</span><br><span class="line">  "cluster_name" : "elasticsearch_jinzhanye",</span><br><span class="line">  "cluster_uuid" : "U4ob5U_CQXifCe_FgI183A",</span><br><span class="line">  "version" : &#123;</span><br><span class="line">    "number" : "7.17.4",</span><br><span class="line">    "build_flavor" : "default",</span><br><span class="line">    "build_type" : "tar",</span><br><span class="line">    "build_hash" : "79878662c54c886ae89206c685d9f1051a9d6411",</span><br><span class="line">    "build_date" : "2022-05-18T18:04:20.964345128Z",</span><br><span class="line">    "build_snapshot" : false,</span><br><span class="line">    "lucene_version" : "8.11.1",</span><br><span class="line">    "minimum_wire_compatibility_version" : "6.8.0",</span><br><span class="line">    "minimum_index_compatibility_version" : "6.0.0-beta1"</span><br><span class="line">  &#125;,</span><br><span class="line">  "tagline" : "You Know, for Search"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令安装 Kibana。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew tap elastic/tap</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install elastic/tap/kibana-full</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成，并确定 ES 已经启动成功后，控制台执行 <code>kibana</code> 命令启动 Kibana。启动后如何能正常访问 <a href="http://localhost:5601" target="_blank" rel="noopener">http://localhost:5601</a> 表示启动成功。</p>
+<p><img src="/images/node-log-to-ek/img2.png" alt=""></p>
+<p>至此我们已经把环境搭建完毕，在进入下一小节之前如果之前没有接触过 ES，可以看看阮老师的文章 <a href="https://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">《全文搜索引擎 Elasticsearch 入门教程》</a> 简单了解一下，有利于消化后面的内容。阮老师文章里提到的命令也可以在 <a href="http://localhost:5601/app/dev_tools#/console" target="_blank" rel="noopener">Kibana Dev Tools</a> 执行，内容被格式化后阅读体验更佳。</p>
+<h2 id="Node-日志上报到-ES"><a href="#Node-日志上报到-ES" class="headerlink" title="Node 日志上报到 ES"></a>Node 日志上报到 ES</h2><p>Node 日志上报到 ES 参考这个 <a href="http.baidu.com">Demo</a>，我们使用 <a href="https://www.npmjs.com/package/winston" target="_blank" rel="noopener">winston</a> 打印日志，使用 <a href="https://www.npmjs.com/package/winston-elasticsearch" target="_blank" rel="noopener">winston-elasticsearch</a> 上报日志到 ES。如下面代码配置所示 winston-elasticsearch 每天新建一个命名为 simple-es-logger-demo-YYYY.MM.DD 的 index。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * es-logger.js</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">createLogger</span>: createWinstonLogger, transports, format &#125; = <span class="built_in">require</span>(<span class="string">'winston'</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; ElasticsearchTransport &#125; = <span class="built_in">require</span>(<span class="string">'winston-elasticsearch'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> esNode = <span class="string">'http://localhost:9200'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createLogger</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> createWinstonLogger(&#123;</span><br><span class="line">    level: <span class="string">'info'</span>,<span class="comment">// 只上报 info 级别以上日志，包括 info、warn、error</span></span><br><span class="line">    transports: [</span><br><span class="line">      <span class="keyword">new</span> transports.Console(&#123;<span class="comment">// 输出到控制台</span></span><br><span class="line">        format: format.json(),</span><br><span class="line">      &#125;),</span><br><span class="line">      <span class="keyword">new</span> ElasticsearchTransport(&#123;<span class="comment">// 输出到 ES</span></span><br><span class="line">        indexPrefix: <span class="string">'simple-es-logger-demo'</span>,<span class="comment">// ES index 前缀</span></span><br><span class="line">        indexSuffixPattern: <span class="string">'YYYY.MM.DD'</span>,<span class="comment">// ES index 后缀，跟前缀拼接起来 index 最终就是 simple-es-logger-demo-YYYY.MM.DD，如 simple-es-logger-demo-2023.01.12</span></span><br><span class="line">        clientOpts: &#123;</span><br><span class="line">          node: esNode,</span><br><span class="line">          maxRetries: <span class="number">5</span>,</span><br><span class="line">          requestTimeout: <span class="number">10000</span>,</span><br><span class="line">          sniffOnStart: <span class="literal">false</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    ]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = createLogger()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Compatibility For Winston 3.7, Elasticsearch 8.0 and later, use the &gt;= 0.17.0. For Winston 3.4, Elasticsearch 7.8 and later, use the &gt;= 0.16.0. For Winston 3.x, Elasticsearch 7.0 and later, use the &gt;= 0.7.0. For Elasticsearch 6.0 and later, use the 0.6.0. For Elasticsearch 5.0 and later, use the 0.5.9. For earlier versions, use the 0.4.x series.</p>
+</blockquote>
+<p>这里版本的问题需要注意，我们使用的是 ES 7.17，从 winston-elasticsearch 的文档可以得知，winston 需要选择 3.4 版本， winston-elasticsearch 需要选择 &gt;= 0.16.0 的版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; package.json</span><br><span class="line">&quot;dependencies&quot;: &#123;</span><br><span class="line">  &quot;koa&quot;: &quot;^2.5.2&quot;,</span><br><span class="line">  &quot;winston&quot;: &quot;3.4.0&quot;,</span><br><span class="line">  &quot;winston-elasticsearch&quot;: &quot;0.16.1&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>接着我们用 Koa 搭建一个简单的服务。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * index.js</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"><span class="keyword">const</span> logger = <span class="built_in">require</span>(<span class="string">'./es-logger'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> body = &#123;</span><br><span class="line">    message: <span class="string">`服务被访问了，生成随机数：<span class="subst">$&#123; <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span>) &#125;</span>`</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logger.info(<span class="built_in">JSON</span>.stringify(body))</span><br><span class="line"></span><br><span class="line">  ctx.body = body</span><br><span class="line"></span><br><span class="line">  next()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">7115</span></span><br><span class="line"></span><br><span class="line">app.listen(port, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务启动成功，http://localhost:<span class="subst">$&#123;<span class="number">7115</span>&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>访问 <a href="http://localhost:7115" target="_blank" rel="noopener">http://localhost:7115</a>，控制台输出如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl http:&#x2F;&#x2F;localhost:7115</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;message&quot;:&quot;&#123;\&quot;message\&quot;:\&quot;服务被访问了，生成随机数：14\&quot;&#125;&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你的控制台没有报错，说明日志已经上报到 ES。winston-elasticsearch 将日志格式化成这样再进行发送。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;@timestamp&quot;: &quot;2022-12-07T06:19:24.969Z&quot;,</span><br><span class="line">  &quot;message&quot;: &quot;&#123;\&quot;message\&quot;:\&quot;服务被访问了，生成随机数：14\&quot;&#125;&quot;,</span><br><span class="line">  &quot;severity&quot;: &quot;info&quot;,</span><br><span class="line">  &quot;fields&quot;: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们看看如何使用 Kibana 查看我们上报的日志。</p>
+<h2 id="使用-Kibana-查看日志"><a href="#使用-Kibana-查看日志" class="headerlink" title="使用 Kibana 查看日志"></a>使用 Kibana 查看日志</h2><p>在首页左侧面板导航找到 Management -&gt; Stack Management，点击进入 Stack Management。再在左侧导航找到 <a href="http://localhost:5601/app/management/kibana/indexPatterns" target="_blank" rel="noopener">Index Patterns</a>。Name 输入 <code>simple-es-logger-demo-*</code>，过滤以 <code>simple-es-logger-demo</code> 开头的 index。Timestamp field 选择 @timestamp。</p>
+<p><img src="/images/node-log-to-ek/img3.png" alt=""></p>
+<p>在首页左侧面板导航找到 Discovery，选择过滤 <code>simple-es-logger-demo-*</code>，就可以看到我们上报的日志。</p>
+<p><img src="/images/node-log-to-ek/img4.png" alt=""></p>
+<p>我们还可以使用 KQL 语法根据关键字过滤日志，比如输入 <code>message: &quot;14&quot;</code> 过滤 <code>message</code> 字段包含 <code>14</code> 的日志。</p>
+<p><img src="/images/node-log-to-ek/img5.png" alt=""></p>
+<h2 id="封装更好用的-SDK"><a href="#封装更好用的-SDK" class="headerlink" title="封装更好用的 SDK"></a>封装更好用的 SDK</h2><p>上文简单封装的 SDK 是不足以应对实际生产环境的，结合实际业务遇到的问题，我们封装了内部使用的日志上报 SDK，欢迎 Start &amp; Fork。</p>
+<ul>
+<li>@za-node/express-logger：Express 日志上报 SDK。</li>
+<li>@za-node/koa-logger：Koa 日志上报 SDK。</li>
+<li>@za-node/egg-framework：基本 Egg 封装的简单上层框架，主要集成日志上报功能。</li>
+</ul>
+<p>主要解决了如下问题：</p>
+<ul>
+<li>ctxLogger API：在实际生产环境中，除了打印的内容以外我们通常还需要记录更多请求上下文信息，比如本次请求的用户的信息、请求耗时、请求 id、请求方法、请求路由、响应体等等。</li>
+<li>自动上报请求、上报响应中间件：自动记录每个请求、响应信息。</li>
+<li>性能问题：非 Serverless 环境先缓存日志，每 30s 上报一次。</li>
+<li>Serverless 环境支持：我们团队有些项目已经迁移到 Serverless 环境部署，Serverless 环境请求结束就会马上销毁服务实例。针对这种情况，在请求结束前 SDK 会完成日志上报，保证日志不丢失。</li>
+<li>更好的 API 体验：<ul>
+<li>SDK 内部使用 <a href="https://www.npmjs.com/package/json-stringify-safe" target="_blank" rel="noopener">json-stringify-safe</a> 将对象进行序列化，保证不会出现序列化异常。</li>
+<li>针对 Error 对象做特殊序列化处理，提高错误信息可读性。</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/targz.html" target="_blank" rel="noopener">Elasticsearch 官方文档</a></li>
+<li><a href="https://www.ruanyifeng.com/blog/2017/08/elasticsearch.html" target="_blank" rel="noopener">全文搜索引擎 Elasticsearch 入门教程</a></li>
+<li><a href="https://www.npmjs.com/package/winston" target="_blank" rel="noopener">winston</a></li>
+<li><a href="https://www.npmjs.com/package/winston-elasticsearch" target="_blank" rel="noopener">winston-elasticsearch</a></li>
+<li><a href="https://www.npmjs.com/package/json-stringify-safe" target="_blank" rel="noopener">json-stringify-safe</a></li>
+</ul>
+<hr>
+<p>欢迎关注我的公众号 Luobo FE，获取最新资讯动态🔥</p>
+<p><img src="/images/common/qrcode.jpg" alt=""></p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2022/12/05/node-log-to-ek/">http://yoursite.com/2022/12/05/node-log-to-ek/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="next" href="/2022/06/10/docker-and-k8s/">
+        <span class="next-text nav-default">Docker&k8s 在前端 CICD 中的应用</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

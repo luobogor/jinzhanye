@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Cookie 的 SameSite 属性一些资料推荐"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2020/11/20/cookie-same-site-recommend/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>Cookie 的 SameSite 属性一些资料推荐 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Cookie 的 SameSite 属性一些资料推荐
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-11-20
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2020/11/20/cookie-same-site-recommend/"
+             data-title="Cookie 的 SameSite 属性一些资料推荐">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>这周推荐一些资料帮忙大家理解 Cookie 的 SameSite 属性是什么，以及如何应对 Chrome 80 Cookie 默认策略的变化，资料按顺序阅读效果更佳。 </p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20201122132900.jpg" alt=""></p>
+<p><a href="https://www.youtube.com/watch?v=aUF2QCEudPo" target="_blank" rel="noopener">《SameSite Cookie Attribute Explained by Example (Strict, Lax, None &amp; No SameSite)》</a>是一个 youtube 短视频，作者实操向我们演示了 SameSite 的三个属性分别有什么不同的效果，非常直观。</p>
+<p><a href="https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html" target="_blank" rel="noopener">《Cookie 的 SameSite 属性》</a>则先介绍 SameSite 诞生的背景（为了解决 CSRF 攻击问题），接着也对 SameSite 的几个属性做了解释，比前面的视频讲得全面。</p>
+<p><a href="https://harttle.land/2020/01/27/secure-cookies.html" target="_blank" rel="noopener">《Chrome 80 跨域 Cookie 变化的影响和应对方案》</a>则从 Cookie 的构成、Secure 和 SameSite 的关系、Chrome 80 Cookie 策略的变化以及如何应对这些变化的角度来讲述，总体上讲得比较全面，但之前如果没了解过 SameSite，直接看这篇文章的话可能会感觉比较晦涩。我就觉得文末关于旧 Chrome 兼容性解决方案讲得比较晦涩，自己阅读了 <a href="https://www.chromium.org/updates/same-site/incompatible-clients" target="_blank" rel="noopener">incompatible-clients</a> 后，重新梳理了下，兼容方案应该是这样子的：</p>
+<ul>
+<li>服务端下发两个 Cookie，第一个 Cookie 设置 <code>Secure</code> 和 <code>SameSite=None</code>，第二个 Cookie 只设置 <code>Secure</code>。</li>
+<li>因为旧版本的 Chrome 会忽略掉第一个 Cookie，所以服务端收到请求取 Cookie 的时候优需要先取第一个 Cookie，如果没有值再取第二个。</li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2020/11/20/cookie-same-site-recommend/">http://yoursite.com/2020/11/20/cookie-same-site-recommend/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2021/01/01/my-2020/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">我的 2020</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2020/10/25/structured-expression/">
+        <span class="next-text nav-default">小学老师曾经教过我们的「金字塔原理」</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

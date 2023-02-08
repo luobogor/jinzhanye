@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="zepto与focus/blur与事件委派"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2018/01/26/zepto与focus、blur与事件委派/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>zepto与focus/blur与事件委派 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">zepto与focus/blur与事件委派
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-26
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2018/01/26/zepto%E4%B8%8Efocus%E3%80%81blur%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%B4%BE/"
+             data-title="zepto与focus/blur与事件委派">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#注册focus事件"><span class="toc-text">注册focus事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册focusin事件"><span class="toc-text">注册focusin事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf53ao51dpj30m80eu4eu.jpg" alt="image"></p>
+<table>
+<thead>
+<tr>
+<th>—</th>
+<th>focusin、focusout</th>
+<th>focus、blur</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>冒泡支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>浏览器支持</td>
+<td>现在所有浏览器都支持，但以前firefox52以下不支持</td>
+<td>所有浏览器都支持</td>
+</tr>
+</tbody></table>
+<h2 id="注册focus事件"><a href="#注册focus事件" class="headerlink" title="注册focus事件"></a>注册focus事件</h2><p>以下是经简化后zepto处理注册focus事件的代码。运行代码，可以观察到当input获得焦点时触发了form注册focus时的回调函数。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>foucus事件委派<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">""</span> <span class="attr">style</span>=<span class="string">"padding: 50px;background-color: #00b4fd;width: 200px;height: 200px"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"helloworld"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">	<span class="comment">//除了IE,其他浏览器的window对象中都没有onfocusin属性，但是其他浏览器addEventListener('focusin')有效</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> focusinSupported = <span class="string">'onfocusin'</span> <span class="keyword">in</span> <span class="built_in">window</span>,</span></span><br><span class="line"><span class="javascript">        form = <span class="built_in">document</span>.forms[<span class="number">0</span>],</span></span><br><span class="line"><span class="actionscript">        focus = &#123;focus: <span class="string">'focusin'</span>, blur: <span class="string">'focusout'</span>&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">callback</span><span class="params">(event)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">    	 <span class="built_in">console</span>.log(event.target.tagName)<span class="comment">//INPUT</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(event.type,event.bubbles)<span class="comment">//event.bubbles为false表明当前事件不会向上冒泡</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.style.background = <span class="string">"red"</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="comment">//当type为focus且浏览器支持onfocusin，则focus -&gt; focusin</span></span></span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">realEvent</span><span class="params">(type)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">return</span> focusinSupported &amp;&amp; focus[type] || type</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">eventCapture</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">//不支持onfocusin则在捕获阶段触发事件</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">return</span> !focusinSupported ? <span class="literal">true</span> : <span class="literal">false</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">    form.addEventListener(realEvent(<span class="string">'focus'</span>), callback, eventCapture());</span></span><br><span class="line"><span class="actionscript"><span class="comment">//    form.addEventListener(realEvent('focus'), callback, false);//focus不会向上冒泡，这样写不会触发回调</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码比较少，下面说一下重点。</p>
+<p>zepto的处理focus事件注册流程大致如下</p>
+<ul>
+<li><code>为了有事件冒泡以完成事件委派</code>，一般情况下zepto用focusin、focusout代替focus、blur</li>
+<li>在浏览器不支持focusin、focusout的情况下，只能用focus、blur在捕获阶段触发回调，间接做到事件委派。</li>
+</ul>
+<p>IE9开始使用DOM事件模型，<code>zepto统一用addEventListener注册事件</code>，不支持IE9以下的版本，zepto中的on方法内部调用add方法，add方法经过多步处理，最后是这样注册一个事件的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">form.addEventListener(realEvent(<span class="string">'focus'</span>), callback, eventCapture());</span><br></pre></td></tr></table></figure>
+
+<p>zepto是用以下方式来判断浏览器是否支持focusin事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> focusinSupported = <span class="string">'onfocusin'</span> <span class="keyword">in</span> <span class="built_in">window</span></span><br></pre></td></tr></table></figure>
+
+<p>除了IE,其他浏览器的window对象中都没有onfocusin属性，其他浏览器中focusinSupported为false，但其他浏览器也支持focusin，用addEventListener(‘focusin’)是有效的。下表是zepto注册focus事件的两个重要判断</p>
+<table>
+<thead>
+<tr>
+<th>—</th>
+<th>IE9+</th>
+<th>FF、Chrome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>realEvent</td>
+<td>focusinSupported:true， focus 转换为 focusin</td>
+<td>focusinSupported:false，focus 不作转换</td>
+</tr>
+<tr>
+<td>eventCapture</td>
+<td>false，冒泡阶段触发回调</td>
+<td>true，捕获阶段触发回调</td>
+</tr>
+</tbody></table>
+<p>在捕获阶段获取目标对象同样可以实现事件委派，原因可以参考以下引用</p>
+<blockquote>
+<p>即使”DOM2级事件”规范明确要求捕获阶段不会涉及事件目标(作者注释：即event.target)，但IE9、Safari、Chrome、Firefox 和 Opera9.5及更高版本都会在捕获阶段触发事件对象上的事件。结果，就是有两个机会在目标对象上面操作事件。<br>&lt;&lt;Javascript高级编程&gt;&gt;第三版 13.1.3 DOM事件流 p348</p>
+</blockquote>
+<h2 id="注册focusin事件"><a href="#注册focusin事件" class="headerlink" title="注册focusin事件"></a>注册focusin事件</h2><p>除了IE9-，在zepto中，其他主流浏览器都可以注册focusin事件</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>现在所有浏览都已经支持foucsin，未来属于支持冒泡的focusin</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Events/focusin" target="_blank" rel="noopener">MDN focusin浏览器支持</a></li>
+<li>&lt;&lt;Javascript高级编程&gt;&gt;第三版 13.1.3 DOM事件流</li>
+</ul>
+<hr>
+<p>欢迎关注我的公众号 Luobo FE，获取最新资讯动态～</p>
+<p><img src="/images/common/qrcode.jpg" alt=""></p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2018/01/26/zepto%E4%B8%8Efocus%E3%80%81blur%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%B4%BE/">http://yoursite.com/2018/01/26/zepto%E4%B8%8Efocus%E3%80%81blur%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%B4%BE/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2018/07/25/Element%20UI%20table%E7%BB%84%E4%BB%B6%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Element UI Table组件源码分析</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="小程序框架 Tina.js 源码分析"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2020/03/08/tinajs-source-code-analysis/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>小程序框架 Tina.js 源码分析 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">小程序框架 Tina.js 源码分析
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-03-08
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2020/03/08/tinajs-source-code-analysis/"
+             data-title="小程序框架 Tina.js 源码分析">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#是什么"><span class="toc-text">是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#概览"><span class="toc-text">概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mix"><span class="toc-text">mix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关联-wx-Page、tina-Page"><span class="toc-text">关联 wx-Page、tina-Page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构建-tina-Page"><span class="toc-text">构建 tina-Page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改变执行上下文"><span class="toc-text">改变执行上下文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追加生命周期勾子"><span class="toc-text">追加生命周期勾子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#compute-实现原理"><span class="toc-text">compute 实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530155744.png" alt="Cover"></p>
+<p>目前公司团队小程序框架使用的是 <a href="https://tina.js.org/#/" target="_blank" rel="noopener">Tina.js</a>，这篇文章将讲解这个框架的源码。阅读文章时可以对照着这个<a href="https://github.com/jinzhanye/my-tina/tree/master/test/sayhi/libraries" target="_blank" rel="noopener">小工程</a>阅读源码，这个小工程主要是对 tina 加了更多的注释及示例。</p>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>Tina.js 是一款轻巧的渐进式微信小程序框架，不仅能充分利用原生小程序的能力，还易于调试。<br>这个框架主要是对 Component、Page 两个全局方法进行了封装，本文主要介绍 <a href="">Tina.js 1.0.0</a> 的 <code>Paeg.define</code> 内部做了些什么。<code>Component.define</code> 与 <code>Paeg.define</code>相似，理解 <code>Paeg.define</code> 之后自然也就理解 <code>Component.define</code>。为什么是讲解 1.0.0 ？因为第一个版本的代码相对于最新版本主干内容更更清晰更容易上手。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530175804.png" alt="类图"></p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>为了避免混淆 tina 和原生的一些概念，这里先说明一下一些词的含义</p>
+<ul>
+<li>wx-Page - 原生 Page 对象</li>
+<li>tina-Page - <code>tina/class/page</code> 这个类</li>
+<li>wxPageOptions - 构建原生 Page 实例的 options</li>
+<li>tinaPageOptions - 构建原生 tina-Page 实例的 options</li>
+</ul>
+<p>开局先来预览一下 <code>Page.define</code> 的流程</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tina/class/page.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page</span> <span class="keyword">extends</span> <span class="title">Basic</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> mixins = []</span><br><span class="line">  <span class="keyword">static</span> define(tinaPageOptions = &#123;&#125;) &#123;</span><br><span class="line">    <span class="comment">// 选项合并</span></span><br><span class="line">    tinaPageOptions = <span class="keyword">this</span>.mix(<span class="comment">/*....*/</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 构建原生 options 对象</span></span><br><span class="line">    <span class="keyword">let</span> wxPageOptions = &#123;<span class="comment">/*.....*/</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在原生 onLoad 时做拦截，关联 wx-Page 对象和 tina-Page 对象</span></span><br><span class="line">    wxPageOptions = prependHooks(wxPageOptions, &#123;</span><br><span class="line">      onLoad() &#123;</span><br><span class="line">        <span class="comment">// this 是小程序 wx-Page 实例</span></span><br><span class="line">        <span class="comment">// instance 是这个 tina-Page 实例</span></span><br><span class="line">        <span class="keyword">let</span> instance = <span class="keyword">new</span> Page(&#123; tinaPageOptions &#125;)</span><br><span class="line">        <span class="comment">// 建立关联</span></span><br><span class="line">        <span class="keyword">this</span>.__tina_instance__ = instance</span><br><span class="line">        instance.$source = <span class="keyword">this</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 构造 wx-Page 对象</span></span><br><span class="line">    <span class="keyword">new</span> globals.Page(&#123;</span><br><span class="line">       <span class="comment">// ...</span></span><br><span class="line">       ...wxPageOptions,</span><br><span class="line">     &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">constructor</span>(&#123; tinaPageOptions = &#123;&#125; &#125;) &#123;</span><br><span class="line">    <span class="keyword">super</span>()</span><br><span class="line">    <span class="comment">//.......</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">get</span> data() &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">this</span>.$source.data</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面针对每个小流程做讲解</p>
+<h2 id="mix"><a href="#mix" class="headerlink" title="mix"></a>mix</h2><p>tina 的 mixin 是靠 js 对对象做合并实现的，并没有使用原生的 <code>behaviors</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tinaPageOptions = <span class="keyword">this</span>.mix(PAGE_INITIAL_OPTIONS, [...BUILTIN_MIXINS, ...this.mixins, ...(tinaPageOptions.mixins || []), tinaPageOptions])</span><br></pre></td></tr></table></figure>
+
+<p>Tina.js 1.0.0 只支持一种合并策略，跟 Vue 的默认合并策略一样</p>
+<ul>
+<li>对于 methods 就是后面的覆盖前面的</li>
+<li>对于生命周期勾子和特殊勾子（onPullDownRefresh 等），就是变成一个数组，还是后面的先执行</li>
+<li>也就是 tinaPageOptions.mixins &gt; Page.mixins（全局 mixin） &gt; BUILTIN_MIXINS</li>
+</ul>
+<p>合并后可以得到这样一个对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &#x2F;&#x2F; 页面</span><br><span class="line">  beforeLoad: [$log.beforeLoad, options.beforeLoad],</span><br><span class="line">  onLoad: [$initial.onLoad, options.onLoad],</span><br><span class="line">  onHide: [],</span><br><span class="line">  onPageScroll: [],</span><br><span class="line">  onPullDownRefresh: [],</span><br><span class="line">  onReachBottom: [],</span><br><span class="line">  onReady: [],</span><br><span class="line">  onShareAppMessage: [],</span><br><span class="line">  onShow: [],</span><br><span class="line">  onUnload: [],</span><br><span class="line">  &#x2F;&#x2F; 组件</span><br><span class="line">  attached: Function,</span><br><span class="line">  compute: Function,</span><br><span class="line">  created: $log.created,</span><br><span class="line">  &#x2F;&#x2F; 页面、组件共用</span><br><span class="line">  data: tinaPageOptions.data,</span><br><span class="line">  methods: tinaPageOptions.methods,</span><br><span class="line">  mixins: [],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>合并后是创建 wx-Page 对象，至于创建 wx-Page 对象过程做了什么，为了方便理解整个流程，在这里暂时先跳过讲解，放在后面 <code>改变执行上下文</code> 小节再讲解。</p>
+<h2 id="关联-wx-Page、tina-Page"><a href="#关联-wx-Page、tina-Page" class="headerlink" title="关联 wx-Page、tina-Page"></a>关联 wx-Page、tina-Page</h2><p>为了绑定 wx-Page 对象，tina 在 wx-onLoad 中追加了一些操作。<br>prependHooks 是作用是在 <code>wxPageOptions[hookName]</code> 执行时追加 <code>handlers[hookName]</code> 操作，并保证 <code>wxPageOptions[hookName]</code>、<code>handlers[hookName]</code> 的执行上下文是原生运行时的 <code>this</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tina/class/page</span></span><br><span class="line">wxPageOptions = prependHooks(wxPageOptions, &#123;</span><br><span class="line">  onLoad() &#123;</span><br><span class="line">    <span class="comment">// this 是 wxPageOptions</span></span><br><span class="line">    <span class="comment">// instance 是 tina-Page 实例</span></span><br><span class="line">    <span class="keyword">let</span> instance = <span class="keyword">new</span> Page(&#123; tinaPageOptions &#125;)</span><br><span class="line">    <span class="comment">// 建立关联</span></span><br><span class="line">    <span class="keyword">this</span>.__tina_instance__ = instance</span><br><span class="line">    instance.$source = <span class="keyword">this</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// tina/utils/helpers.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在 wx-page 生命周期勾子前追加勾子</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> <span class="variable">context</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> <span class="variable">handlers</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;Object&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> prependHooks = <span class="function">(<span class="params">context, handlers</span>) =&gt;</span></span><br><span class="line"> addHooks(context, handlers, <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addHooks</span> (<span class="params">context, handlers, isPrepend = false</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> result = &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> name <span class="keyword">in</span> handlers) &#123;</span><br><span class="line">    <span class="comment">// 改写 hook 方法</span></span><br><span class="line">    result[name] = <span class="function"><span class="keyword">function</span> <span class="title">handler</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 小程序运行时, this 是 wxPageOptions</span></span><br><span class="line">      <span class="keyword">if</span> (isPrepend) &#123;</span><br><span class="line">        <span class="comment">// 执行 tina 追加的 onLoad</span></span><br><span class="line">        handlers[name].apply(<span class="keyword">this</span>, args)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> context[name] === <span class="string">'function'</span>) &#123;</span><br><span class="line">        <span class="comment">// 执行真正的 onLoad</span></span><br><span class="line">        context[name].apply(<span class="keyword">this</span>, args)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    ...context,</span><br><span class="line">    ...result,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建-tina-Page"><a href="#构建-tina-Page" class="headerlink" title="构建 tina-Page"></a>构建 tina-Page</h2><p>接下来再来看看 <code>new Page</code> 做了什么</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(&#123; tinaPageOptions = &#123;&#125; &#125;) &#123;</span><br><span class="line">  <span class="keyword">super</span>()</span><br><span class="line">  <span class="comment">// 创建 wx-page options</span></span><br><span class="line">  <span class="keyword">let</span> members = &#123;</span><br><span class="line">    <span class="comment">// compute 是 tina 添加的方法</span></span><br><span class="line">    compute: tinaPageOptions.compute || <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    ...tinaPageOptions.methods,</span><br><span class="line">    <span class="comment">// 用于代理所有生命周期（包括 tina 追加的 beforeLoad）</span></span><br><span class="line">    ...mapObject(pick(tinaPageOptions, PAGE_HOOKS), (handlers) =&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 因为做过 mixin 处理，一个生命周期会有多个处理方法</span></span><br><span class="line">        <span class="keyword">return</span> handlers.reduce(<span class="function">(<span class="params">memory, handler</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> result = handler.apply(<span class="keyword">this</span>, args.concat(memory))</span><br><span class="line">          <span class="keyword">return</span> result</span><br><span class="line">        &#125;, <span class="keyword">void</span> <span class="number">0</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// 以 beforeLoad、onLoad 为例，以上 mapObject 后追加的生命周期处理方法实际执行时是这样的</span></span><br><span class="line">    <span class="comment">// beforeLoad(...args) &#123;</span></span><br><span class="line">    <span class="comment">//  return [onLoad1、onLoad2、.....].reduce((memory, handler) =&gt; &#123;</span></span><br><span class="line">    <span class="comment">//    return handler.apply(this, args.concat(memory))</span></span><br><span class="line">    <span class="comment">//  &#125;, void 0)</span></span><br><span class="line">    <span class="comment">//&#125;,</span></span><br><span class="line">    <span class="comment">// onLoad(...args) &#123;</span></span><br><span class="line">    <span class="comment">//   return [onShow1、onShow2、.....].reduce((memory, handler) =&gt; &#123;</span></span><br><span class="line">    <span class="comment">//     return handler.apply(this, args.concat(memory))</span></span><br><span class="line">    <span class="comment">//   &#125;, void 0)</span></span><br><span class="line">    <span class="comment">// &#125;,</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// tina-page 代理所有属性</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> name <span class="keyword">in</span> members) &#123;</span><br><span class="line">    <span class="keyword">this</span>[name] = members[name]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是将 <code>tinaPageOptions</code> 变成跟 <code>wxPageOptions</code> 一样的结构，因为 wxPageOptions 的 <code>methods</code> 和 <code>hooks</code> 都是在 options 的第一层的，所以需要将将 methods 和 hooks 铺平。<br>又因为 hooks 经过 mixins 处理已经变成了数组，所以需要遍历执行，每个 hooks 的第二个参数都是之前累积的结果。然后通过简单的属性拷贝将所有方法拷贝到 tina-Page 实例。</p>
+<h2 id="改变执行上下文"><a href="#改变执行上下文" class="headerlink" title="改变执行上下文"></a>改变执行上下文</h2><p>上面提到构建一个属性跟 wx-Page 一模一样的 tina-Page 对象，那么为什么要这样呢？一个框架的作用是什么？我认为是在原生能力之上建立一个能够提高开发效率的抽象层。现在 tina 就是这个抽象层，<br>举个例子来说就是我们希望 <code>methods.foo</code> 被原生调用时，tina 能在 <code>methods.foo</code> 里做更多的事情。所以 tina 需要与原生关联使得所有本来由原生处理的东西转交到 tina 这个抽象层处理。<br>那 tina 是如何处理的呢。我们先来看看创建 <code>wxPageOptions</code> 的源码 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tina/class/page.js</span></span><br><span class="line"><span class="keyword">let</span> wxPageOptions = &#123;</span><br><span class="line">  ...wxOptionsGenerator.methods(tinaPageOptions.methods),</span><br><span class="line">  ...wxOptionsGenerator.lifecycles(</span><br><span class="line">    inUseOptionsHooks,</span><br><span class="line">    (name) =&gt; ADDON_BEFORE_HOOKS[name]</span><br><span class="line">  ),</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// tina/class/page.js</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * wxPageOptions.methods 中的改变执行上下文为 tina.Page 对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> <span class="variable">object</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;Object&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">methods</span>(<span class="params">object</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> mapObject(object || &#123;&#125;, (method, name) =&gt; <span class="function"><span class="keyword">function</span> <span class="title">handler</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> context = <span class="keyword">this</span>.__tina_instance__</span><br><span class="line">    <span class="keyword">return</span> context[name].apply(context, args)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案就在 <code>wxOptionsGenerator.methods</code>。上面说过在 <code>onLoad</code> 的时候会绑定 <code>__tina_instance__</code> 到 wx-Page，同时 wx-Page 与 tina-Page 的属性都是一模一样的，所以调用会被转发到 tina 对应的方法。这就相当于 tina 在 wx 之上做了一个抽象层。所有的被动调用都会被 tina 处理。而且因为上下文是 <code>__tina_instance__</code> 的缘故，<br>所有主动调用都先经过 tina 再到 wx。结合下面两个小节会有更好的理解。</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530175702.png" alt="调用拦截"></p>
+<h2 id="追加生命周期勾子"><a href="#追加生命周期勾子" class="headerlink" title="追加生命周期勾子"></a>追加生命周期勾子</h2><p>上面创建 <code>wxPageOptions</code> 时有这么一句 <code>wxOptionsGenerator.lifecycles</code> 代码，这是 tina 用于在 <code>onLoad</code> 之前加多一个 <code>beforeLoad</code> 生命周期勾子，这个功能是怎么做的呢，我们来看看源码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tina/utils/wx-options-generator</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * options.methods 中的改变执行上下文为 tina.Page 对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> <span class="variable">hooks</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> <span class="variable">getBeforeHookName</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;Object&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">lifecycles</span>(<span class="params">hooks, getBeforeHookName</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fromPairs(hooks.map(<span class="function">(<span class="params">origin</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> before = getBeforeHookName(origin) <span class="comment">// 例如 'beforeLoad'</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">      origin, <span class="comment">// 例如 'load'</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">wxHook</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> context = <span class="keyword">this</span>.__tina_instance__</span><br><span class="line">        <span class="comment">// 调用 tina-page 的方法，例如 beforeLoad</span></span><br><span class="line">        <span class="keyword">if</span> (before &amp;&amp; context[before]) &#123;</span><br><span class="line">          context[before].apply(context, <span class="built_in">arguments</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (context[origin]) &#123;</span><br><span class="line">          <span class="keyword">return</span> context[origin].apply(context, <span class="built_in">arguments</span>)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实就是改写 <code>onLoad</code> ，在调用 <code>tina-Page.onLoad</code> 前先调用 <code>tina-Page.beforeLoad</code>。可能有的人会有疑问，为什么要加个 <code>beforeLoad</code> 勾子，这跟直接 <code>onLoad</code> 里不都一样的么。<br>举个例子，很多时候我们在 <code>onLoad</code> 拿到 <code>query</code> 之后是不是都要手动去 <code>decode</code>，利用全局 <code>mixins</code> 和 <code>beforeLoad</code>，可以一次性把这个事情做了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Page.mixins = [&#123;</span><br><span class="line">  beforeLoad(query) &#123;</span><br><span class="line">    <span class="comment">// 对 query 进行 decode</span></span><br><span class="line">    <span class="comment">// 对 this.$options 进行 decode</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>还有一点需要注意的是，tina 源码中了多次对 <code>onLoad</code> 拦截，执行顺序如下 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prependHooks.addHooks.handler -&gt; wx-Page.onLoad，关联 wx-Page、tinaPage -&gt; 回到 prependHooks.addHooks.handler -&gt; lifecycles.wxHook -&gt; tina-Page.beforeLoad -&gt; tina-Page.onLoad</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示</p>
+<p><img src="https://gitee.com/yejinzhan/images/raw/master/20200530175707.png" alt="启动流程"></p>
+<h2 id="compute-实现原理"><a href="#compute-实现原理" class="headerlink" title="compute 实现原理"></a>compute 实现原理</h2><p>因为运行时的上下文都被 tina 改为 tina-Page，所以开发者调用的 <code>this.setData</code>， 实际上的 tina-Page 的 <code>setData</code> 方法，又因为 tina-Page 继承自 Basic，也就调用 Basic 的 setData 方法。下面看看 <code>setData</code> 的源码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">setData(newer, callback = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;) &#123;</span><br><span class="line">  <span class="keyword">let</span> next = &#123; ...this.data, ...newer &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>.compute === <span class="string">'function'</span>) &#123;</span><br><span class="line">    next = &#123;</span><br><span class="line">      ...next,</span><br><span class="line">      ...this.compute(next),</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  next = diff(next, <span class="keyword">this</span>.data)</span><br><span class="line">  <span class="keyword">this</span>.constructor.log(<span class="string">'setData'</span>, next)</span><br><span class="line">  <span class="keyword">if</span> (isEmpty(next)) &#123;</span><br><span class="line">    <span class="keyword">return</span> callback()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>.$source.setData(next, callback)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从源码可以看到就是每次 <code>setData</code> 的时候调用一下 <code>compute</code> 更新数据，这是 <code>compute</code>  的原理，很容易理解吧。</p>
+<p>前面 <code>mix</code> 小节提到，tina 会合并一些内置选项，可以看到在 <code>onLoad</code> 时会调用<code>this.setData</code>，为了初始化 compute 属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixins/index.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initial</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 为了初始化 compute 属性</span></span><br><span class="line">  <span class="keyword">this</span>.setData()</span><br><span class="line">  <span class="keyword">this</span>.$log(<span class="string">'Initial Mixin'</span>, <span class="string">'Ready'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> $initial = &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  onLoad: initial,<span class="comment">// 页面加载完成勾子</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>到此基本上把 <code>Page.define</code> 主干流程讲完，如有疑问欢迎留言</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://tina.js.org/#/?id=tinajs" target="_blank" rel="noopener">《tina 文档》</a></li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2020/03/08/tinajs-source-code-analysis/">http://yoursite.com/2020/03/08/tinajs-source-code-analysis/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2020/03/15/mina-loader-source-code-analysis/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">mina-loader 源码浅析</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/">
+        <span class="next-text nav-default">mxGraph 入门实例教程</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

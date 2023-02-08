@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="前端 CLI 的前世今生"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2022/03/20/cli-history/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>前端 CLI 的前世今生 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">前端 CLI 的前世今生
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2022-03-20
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2022/03/20/cli-history/"
+             data-title="前端 CLI 的前世今生">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Yeoman"><span class="toc-text">Yeoman</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写-Generator"><span class="toc-text">编写 Generator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SAO"><span class="toc-text">SAO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-CLI3"><span class="toc-text">Vue CLI3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-UI"><span class="toc-text">Vue UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SAO2"><span class="toc-text">SAO2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="Yeoman"><a href="#Yeoman" class="headerlink" title="Yeoman"></a><a href="https://yeoman.io/" target="_blank" rel="noopener">Yeoman</a></h2><p>Yeoman 是一个功能强大，且使用稍有点复杂的 CLI 库，早在 2014 年前发布了，一直流行至今。用 Yeoman 编写的模板有 <a href="https://github.com/yeoman/generator-node" target="_blank" rel="noopener">generator-node</a>、<a href="https://github.com/eslint/generator-eslint" target="_blank" rel="noopener">generator-eslint</a> 等等。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>以 <a href="https://github.com/eslint/generator-eslint" target="_blank" rel="noopener">generator-eslint</a> 为例，我们要使用这个模板生成项目只需要先全局安装 Yeoman 和 generator-eslint。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g yo</span><br><span class="line">npm i -g generator-eslint</span><br></pre></td></tr></table></figure>
+
+<p>接着在终端运行 <code>yo eslint:plugin</code> 即可生成一个 eslint 插件项目。</p>
+<h3 id="编写-Generator"><a href="#编写-Generator" class="headerlink" title="编写 Generator"></a>编写 Generator</h3><p>接下来讲下如何使用 Yeoman 编写项目模板，Yeoman 把生成代码的功能描述为 Generator。Generator 项目需要以 <code>generator-</code> 开头。Generator 无非是由三部分组成：</p>
+<ul>
+<li>用户交互：提示用户进行功能选择</li>
+<li>文件操作：文件内容变量编译、写文件等等</li>
+<li>依赖操作：对 <code>package.json</code> 的依赖进行修改</li>
+</ul>
+<p>Yeoman Generator 也不例外，下面主要讲下 Yeoman Generator 里个人觉得比较重要的功能：</p>
+<ul>
+<li>提供 <a href="https://yeoman.io/authoring/user-interactions.html" target="_blank" rel="noopener">Prompt API</a> 进行用户交互</li>
+<li><a href="https://yeoman.io/authoring/running-context.html" target="_blank" rel="noopener">生命周期勾子</a>：编写 Generator 时，开发者需要遵循 Yeoman 提供的勾子在不同的勾子实现相应的功能，比如在 <code>prompting</code> 勾子调用 <code>this.prompt()</code> 提示用户进行选择。</li>
+</ul>
+<p><img src="/images/cli-history/Untitled.png" alt="Untitled"></p>
+<ul>
+<li>提供 <a href="https://yeoman.github.io/generator/actions_spawn-command.html" target="_blank" rel="noopener">命令行操作 API</a>：一般用于 npm 操作</li>
+<li>提供 <a href="https://yeoman.github.io/generator/actions_user.html" target="_blank" rel="noopener">git 操作 API</a></li>
+<li>提供 <a href="https://yeoman.github.io/generator/actions_package-json.html" target="_blank" rel="noopener">package.json 文件操作 API</a>：用于修改 <code>package.json</code> 文件内容</li>
+<li>提供 <a href="https://yeoman.io/authoring/file-system.html" target="_blank" rel="noopener">常用文件操作 API</a>：<a href="https://yeoman.github.io/generator/actions_fs.html" target="_blank" rel="noopener">文件内容变量编译、写文件等等</a></li>
+<li>提供 <a href="https://yeoman.io/authoring/composability.html" target="_blank" rel="noopener">compose</a> 对功能进行解耦：<a href="https://github.com/yeoman/generator-node" target="_blank" rel="noopener">generator-node</a> 是个很值得学习的库，可以看到它支持的选项有很多，把这个库读一遍基本能理解 Yeoman 大部分功能了。从 generator-node 目录可以看到每个选项由一个 generator，然后用 compose 进行连接，这样能很好对功能进行解耦，以后需要加选项则多加一个 generator 就可以，方便维护。</li>
+</ul>
+<p><img src="/images/cli-history/img.png" alt="generator-node 支持的选项">（generator-node 支持的选项）</p>
+<p><img src="/images/cli-history/img_1.png" alt="generator-node 目录">（generator-node 目录）</p>
+<h2 id="SAO"><a href="#SAO" class="headerlink" title="SAO"></a><a href="https://github.com/saojs/sao" target="_blank" rel="noopener">SAO</a></h2><blockquote>
+<p>SAO was made because yeoman, while powerful, is too complex. vue-cli, on the other hand, is more than a scaffolding tool and lacks some important features like unit testing. SAO combines the powerful core features of yeoman with the simplicity of vue-cli into a single application.</p>
+</blockquote>
+<p>SAO 是与 Vue CLI2 同期的作品。正如上面 SAO 主页提及的那样，Yeoman 虽然强大，但还是有一点学习成本的。而 Vue CLI（这里指的是 Vue CLI2）虽然易用，但是缺少了一些像单元测试这样重要的功能。作者结合 Vue CLI 的易用性，以及 Yeoman 的核心功能整合到一个库，这就是 SAO。</p>
+<p>对比 <a href="https://sao.vercel.app/saofile.html" target="_blank" rel="noopener">SAO File</a> 从这个 <a href="https://github.com/vuejs-templates/webpack/blob/develop/meta.js" target="_blank" rel="noopener">Vue CLI2 的模板</a>，如出一辙。SAO 核心功能如下</p>
+<ul>
+<li>prompt：用户交互</li>
+<li>actions：对文件进行增加、修改、移动、删除</li>
+<li>hooks：只有 prepare、completed 两个生命周期勾子，非常简单</li>
+<li>模板编译</li>
+</ul>
+<p>通过 SAO 与 Yeoman 的对比可以发现，SAO 是重流程的 CLI 工具，开发 Generator 过程需要考虑的东西都集成在 <a href="https://sao.vercel.app/saofile.html" target="_blank" rel="noopener">SAO File</a>。而 Yeoman 虽然看起来生命周期勾子比较多，但其实对流程管控没有 SAO 强，但是它的 API 比 SAO 要强大很多，基于这点用 Yeoman 来开发 Generator 会更加灵活，而 SAO 偏「傻瓜式」点，更加简单，有 Vue 的味道。用 SAO 编写的模板可以参考<a href="https://github.com/saojs/awesome-sao" target="_blank" rel="noopener">这里</a>。</p>
+<h2 id="Vue-CLI3"><a href="#Vue-CLI3" class="headerlink" title="Vue CLI3"></a>Vue CLI3</h2><p>Vue CLI3 与 Vue CLI2 相比最大的变化是加入插件化机制。从 <a href="https://github.com/vuejs-templates/webpack" target="_blank" rel="noopener">Vue CLI2 Webpack 模板</a>可以看出，对于选项差异化的处理还是比较简单粗暴的，直接一个 <code>if</code> 语句解决，好歹 Yeoman 还有 Compose 这种东西对功能进行解耦。这种用 <code>if else</code> 来处理的方式很大地制约了功能的扩展，Vue CLI3 支持 TS 配置如果用这种方式，代码肯定非常恶心。</p>
+<p><img src="/images/cli-history/Untitled%201.png" alt="Vue CLI2  官方 Webpack 模板">（Vue CLI2 官方 Webpack 模板）</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* webpack/template/build/webpack.base.conf.js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ....</span></span><br><span class="line"></span><br><span class="line">&#123;&#123;#lint&#125;&#125;const createLintingRule = () =&gt; (&#123;</span><br><span class="line">  test: <span class="regexp">/\.(js|vue)$/</span>,</span><br><span class="line">  loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">  enforce: <span class="string">'pre'</span>,</span><br><span class="line">  include: [resolve(<span class="string">'src'</span>), resolve(<span class="string">'test'</span>)],</span><br><span class="line">  options: &#123;</span><br><span class="line">    formatter: <span class="built_in">require</span>(<span class="string">'eslint-friendly-formatter'</span>),</span><br><span class="line">    emitWarning: !config.dev.showEslintErrorsInOverlay</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)&#123;&#123;/lint&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  context: path.resolve(__dirname, <span class="string">'../'</span>),</span><br><span class="line">  entry: &#123;</span><br><span class="line">    app: <span class="string">'./src/main.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: config.build.assetsRoot,</span><br><span class="line">    filename: <span class="string">'[name].js'</span>,</span><br><span class="line">    publicPath: process.env.NODE_ENV === <span class="string">'production'</span></span><br><span class="line">      ? config.build.assetsPublicPath</span><br><span class="line">      : config.dev.assetsPublicPath</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>针对上面问题，Vue CLI3 使用插件化机制，Vue CLI3 由多个包组成，核心包 cli 只负责控制流程，cli-service 包提供基础模板，然后针对特定选项提供不同的插件输出不同的代码模板，比如 cli-plugin-router、cli-plugin-typescript、cli-plugin-babel 等等。同时，插件化还有一个好处就是可以给开发者提供一个入口完善 Vue 生态。</p>
+<h2 id="Vue-UI"><a href="#Vue-UI" class="headerlink" title="Vue UI"></a>Vue UI</h2><p>还没用过 Vue UI 之前，我以为这只是个提供图形界面用于生成 Vue 项目的方式。用了一次后就被震住了，它不仅仅可以用来生成项目，我觉得这个工具最厉害的地方在于，它把项目我们平时最关心的信息都整合进来了。可以看看下面两个图感受一下，打包信息、包体积分析这些功能都集成了，这对于我们分析项目做一些优化非常有帮助。而且基于团队的情况我们可以在此基础上把更多的功能集成进去，让我们能更加全面地了解项目。</p>
+<p><img src="/images/cli-history/Untitled%202.png" alt="Untitled"></p>
+<p><img src="/images/cli-history/Untitled%203.png" alt="Untitled"></p>
+<h2 id="SAO2"><a href="#SAO2" class="headerlink" title="SAO2"></a><a href="https://github.com/saojs/sao/tree/releases/v2.0.0-beta.2" target="_blank" rel="noopener">SAO2</a></h2><p>Vue CLI3 的问题是只适用于 Vue 项目，如果我们想编写其他框架的模板就不适用了。SAO2 是一个还在开发中的项目，个人估计作者是准备参考 Vue CLI3 那套插件化机制对 SAO 进行重写，为 SAO 提供更好的扩展性。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/o7kt8IWZ0u07a2z0O573Ew" target="_blank" rel="noopener">【前端工程化基础 - 初始化项目】现代 CLI 和 GUI 方案指南</a></li>
+<li><a href="https://segmentfault.com/a/1190000015366009" target="_blank" rel="noopener">Vue CLI 3.0 UI控制台初体验</a></li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2022/03/20/cli-history/">http://yoursite.com/2022/03/20/cli-history/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2022/03/30/vue-cli-generator-analysis/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Vue CLI Generator 源码浅析</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2021/03/02/cookie-same-site-practice/">
+        <span class="next-text nav-default">Cookie SameSite 支持的最佳实践</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

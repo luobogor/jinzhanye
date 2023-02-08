@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Vue CLI Service 源码浅析"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2022/04/09/vue-cli-service-analysis/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>Vue CLI Service 源码浅析 - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Vue CLI Service 源码浅析
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2022-04-09
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2022/04/09/vue-cli-service-analysis/"
+             data-title="Vue CLI Service 源码浅析">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#加载插件"><span class="toc-text">加载插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令注册"><span class="toc-text">命令注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插件执行"><span class="toc-text">插件执行</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p><img src="/images/vue-cli-service-analysis/img.png" alt="img.png"></p>
+<p>继上文 <a href="https://yejinzhan.gitee.io/2022/03/30/vue-cli-generator-analysis/" target="_blank" rel="noopener">Vue CLI Generator 源码浅析</a>，本文结合 <a href="https://github.com/vuejs/vue-cli/tree/v4.5.15/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">cli-plugin-typescript</a> 讲述执行 <code>npm run serve</code> ，Vue CLI Service （版本为 <a href="https://github.com/vuejs/vue-cli/tree/v4.5.15" target="_blank" rel="noopener">4.5.15</a>）内部是如何进行 Webpack 配置。</p>
+<h2 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h2><p>从 <code>/packages/@vue/cli-service/package.json</code> 的 <code>bin</code> 字段开始我们顺藤摸瓜找到 Service 这个核心类。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* packages/@vue/cli-service/package.json</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"@vue/cli-service"</span>,</span><br><span class="line">  <span class="string">"bin"</span>: &#123;</span><br><span class="line">    <span class="string">"vue-cli-service"</span>: <span class="string">"bin/vue-cli-service.js"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* packages/@vue/cli-service/bin/vue-cli-service.js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> Service = <span class="built_in">require</span>(<span class="string">'../lib/Service'</span>)</span><br><span class="line"><span class="keyword">const</span> service = <span class="keyword">new</span> Service(process.env.VUE_CLI_CONTEXT || process.cwd())</span><br><span class="line"><span class="comment">// command 为 server、build、....</span></span><br><span class="line">service.run(command, args, rawArgv).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">  error(err)</span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// ....</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你使用 Vue CLI 生成项目选择了使用 TS，那么生成的项目的 <code>package.json</code> 会带有 <code>@vue/cli-plugin-typescript</code> 依赖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;ts-demo&quot;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;serve&quot;: &quot;vue-cli-service serve&quot;,</span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;</span><br><span class="line">    &quot;@vue&#x2F;cli-plugin-typescript&quot;: &quot;~4.5.0&quot;,</span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>new Service</code> 时执行 <code>resolvePlugins</code> 将内置的插件、以及从用户项目的 <code>package.json</code> 中找到以 <code>@vue/cli-plugin-</code> 开头的的插件加载到数组。回到 <code>bin/vue-cli-service.js</code> 方法，接着执行 <code>service.run</code>，当 <code>init</code> 被调用的执行这些插件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* cli-service/lib/service.js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(context, &#123; plugins, pkg, inlineOptions, useBuiltIn &#125; = &#123;&#125;) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">this</span>.plugins = <span class="keyword">this</span>.resolvePlugins(plugins, useBuiltIn)</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  resolvePlugins(inlinePlugins, useBuiltIn) &#123;</span><br><span class="line">    <span class="keyword">const</span> idToPlugin = <span class="function"><span class="params">id</span> =&gt;</span> (&#123;</span><br><span class="line">      id: id.replace(<span class="regexp">/^.\\/</span><span class="regexp">/, 'built-in:'),</span></span><br><span class="line"><span class="regexp">      apply: require(id) /</span><span class="regexp">/ 引入插件</span></span><br><span class="line"><span class="regexp">    &#125;)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    let plugins</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    const builtInPlugins = [</span></span><br><span class="line"><span class="regexp">      './commands/serve',</span></span><br><span class="line"><span class="regexp">      './config/base', //  Webpack 基础配置</span></span><br><span class="line"><span class="regexp">      // ....</span></span><br><span class="line"><span class="regexp">    ].map(idToPlugin)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ ...</span></span><br><span class="line"><span class="regexp">    const projectPlugins = Object.keys(this.pkg.devDependencies || &#123;&#125;)</span></span><br><span class="line"><span class="regexp">      .concat(Object.keys(this.pkg.dependencies || &#123;&#125;))</span></span><br><span class="line"><span class="regexp">      .filter((id) =&gt; &#123;</span></span><br><span class="line"><span class="regexp">        return /</span>^(@vue\\/|vue-|@[\\w-]+(\\.)?[\\w-]+\\/vue-)cli-plugin-<span class="regexp">/.test(id)</span></span><br><span class="line"><span class="regexp">      &#125;)</span></span><br><span class="line"><span class="regexp">      .map(id =&gt; &#123;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ ....</span></span><br><span class="line"><span class="regexp">        return idToPlugin(id)</span></span><br><span class="line"><span class="regexp">      &#125;)</span></span><br><span class="line"><span class="regexp">    plugins = builtInPlugins.concat(projectPlugins)</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ ...</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    return plugins</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">  init(mode = process.env.VUE_CLI_MODE) &#123;</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ ...</span></span><br><span class="line"><span class="regexp">    this.plugins.forEach((&#123; id, apply &#125;) =&gt; &#123;</span></span><br><span class="line"><span class="regexp">      /</span><span class="regexp">/ ...</span></span><br><span class="line"><span class="regexp">      /</span><span class="regexp">/ 执行插件</span></span><br><span class="line"><span class="regexp">      apply(new PluginAPI(id, this), this.projectOptions)</span></span><br><span class="line"><span class="regexp">    &#125;)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ ...</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">  async run (name, args = &#123;&#125;, rawArgv = []) &#123;</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ resolve mode</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ prioritize inline --mode</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ fallback to resolved default modes from plugins or development if --watch is defined</span></span><br><span class="line"><span class="regexp">    const mode = args.mode || (name === 'build' &amp;&amp; args.watch ? 'development' : this.modes[name])</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ load env variables, load user config, apply plugins</span></span><br><span class="line"><span class="regexp">    await this.init(mode)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ name 为 dev</span></span><br><span class="line"><span class="regexp">    let command = this.commands[name]</span></span><br><span class="line"><span class="regexp">    const &#123; fn &#125; = command</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 执行 command dev</span></span><br><span class="line"><span class="regexp">    return fn(args, rawArgv)</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令注册"><a href="#命令注册" class="headerlink" title="命令注册"></a>命令注册</h2><p><code>packages/@vue/cli-service/lib/commands/serve.js</code> 插件则注册 <code>serve</code> 这个命令，<code>registerCommand</code> 将 callback 保存到 <code>commands</code> 对象。所以上面代码 <code>run</code> 最后一行 <code>fn(args, rawArgv)</code> 执行就是 callback，也就是说所有的插件执行完毕后，这个 callback 才会被执行。这时 <code>resolveWebpackConfig</code> 将 Webpack Chain 转换成 Webpack 配置对象，拿到 Webpack 配置对象后就可以调用 <code>webpack</code> 方法进行打包了，至此整个 serve 流程完毕。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* packages/@vue/cli-service/lib/commands/serve.js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** <span class="doctag">@type <span class="type">&#123;import('@vue/cli-service').ServicePlugin&#125;</span> </span>*/</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">api, options</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 注册命令</span></span><br><span class="line">  api.registerCommand(<span class="string">'serve'</span>, &#123;</span><br><span class="line">    description: <span class="string">'start development server'</span>,</span><br><span class="line">    usage: <span class="string">'vue-cli-service serve [options] [entry]'</span>,</span><br><span class="line">    options: &#123;</span><br><span class="line">      <span class="string">'--open'</span>: <span class="string">`open browser on server start`</span>,</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">serve</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line">    <span class="keyword">const</span> webpackConfig = api.resolveWebpackConfig()</span><br><span class="line">    webpack(webpackConfig)</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插件执行"><a href="#插件执行" class="headerlink" title="插件执行"></a>插件执行</h2><p><code>./config/base</code> 插件利用 Webpack Chain API 加载基础配置，接着 TS 插件通过 Webpack Chain 先是修改入口文件为 <code>main.ts</code>，然后再添加  TS 相关 Webpack 配置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* cli-plugin-typescript/index.js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">api</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">  api.chainWebpack(<span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 修改入口文件为 main.ts</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    config.entry(<span class="string">'app'</span>)</span><br><span class="line">      .clear()</span><br><span class="line">      .add(<span class="string">'./src/main.ts'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 使用 Webppack Chain 添加 ts 配置相应的 loader 和 plugin</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">const</span> tsRule = config.module.rule(<span class="string">'ts'</span>).test(<span class="regexp">/\\.ts$/</span>)</span><br><span class="line">    <span class="keyword">const</span> tsxRule = config.module.rule(<span class="string">'tsx'</span>).test(<span class="regexp">/\\.tsx$/</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// add a loader to both *.ts &amp; vue&lt;lang="ts"&gt;</span></span><br><span class="line">    <span class="keyword">const</span> addLoader = <span class="function">(<span class="params">&#123; name, loader, options &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">      tsRule.use(name).loader(loader).options(options)</span><br><span class="line">      tsxRule.use(name).loader(loader).options(options)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">    addLoader(&#123;</span><br><span class="line">      name: <span class="string">'babel-loader'</span>,</span><br><span class="line">      loader: <span class="built_in">require</span>.resolve(<span class="string">'babel-loader'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    addLoader(&#123;</span><br><span class="line">      name: <span class="string">'ts-loader'</span>,</span><br><span class="line">      loader: <span class="built_in">require</span>.resolve(<span class="string">'ts-loader'</span>),</span><br><span class="line">      options: &#123;</span><br><span class="line">        transpileOnly: <span class="literal">true</span>,</span><br><span class="line">        appendTsSuffixTo: [ <span class="string">'\\\\.vue$'</span> ],</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// make sure to append TSX suffix</span></span><br><span class="line">    tsxRule.use(<span class="string">'ts-loader'</span>).loader(<span class="built_in">require</span>.resolve(<span class="string">'ts-loader'</span>)).tap(<span class="function"><span class="params">options</span> =&gt;</span> &#123;</span><br><span class="line">      options = <span class="built_in">Object</span>.assign(&#123;&#125;, options)</span><br><span class="line">      <span class="keyword">delete</span> options.appendTsSuffixTo</span><br><span class="line">      options.appendTsxSuffixTo = [ <span class="string">'\\\\.vue$'</span> ]</span><br><span class="line">      <span class="keyword">return</span> options</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    config</span><br><span class="line">      .plugin(<span class="string">'fork-ts-checker'</span>)</span><br><span class="line">      .use(<span class="built_in">require</span>(<span class="string">'fork-ts-checker-webpack-plugin'</span>), [ &#123;</span><br><span class="line">        typescript: &#123;</span><br><span class="line">          extensions: &#123;</span><br><span class="line">            vue: &#123;</span><br><span class="line">              enabled: <span class="literal">true</span>,</span><br><span class="line">              compiler: isVue3 ? <span class="built_in">require</span>.resolve(<span class="string">'vue/compiler-sfc'</span>) : <span class="built_in">require</span>.resolve(<span class="string">'vue-template-compiler'</span>)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          diagnosticOptions: &#123;</span><br><span class="line">            semantic: <span class="literal">true</span>,</span><br><span class="line">            <span class="comment">// &lt;https://github.com/TypeStrong/ts-loader#happypackmode&gt;</span></span><br><span class="line">            syntactic: <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;])</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2022/04/09/vue-cli-service-analysis/">http://yoursite.com/2022/04/09/vue-cli-service-analysis/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2022/04/29/vue-za-swiper-technical-solution/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">vue-za-swiper 技术方案</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2022/03/30/vue-cli-generator-analysis/">
+        <span class="next-text nav-default">Vue CLI Generator 源码浅析</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

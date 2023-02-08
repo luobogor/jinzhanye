@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="记一次绘图框架技术选型 - jsPlumb VS mxGraph"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2019/03/21/记一次绘图框架技术选型_jsPlumb_VS_mxGraph/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz",
+      appKey: "WM7KSHWQxXSOlxGBieADbzMy"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
+</script>
+
+    <title>记一次绘图框架技术选型 - jsPlumb VS mxGraph - Jz de boke</title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Jz de boke</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Jz de boke</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">记一次绘图框架技术选型 - jsPlumb VS mxGraph
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-21
+        </span><span class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+            </span>
+        <span class="post-visits"
+             data-url="/2019/03/21/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BB%98%E5%9B%BE%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B_jsPlumb_VS_mxGraph/"
+             data-title="记一次绘图框架技术选型 - jsPlumb VS mxGraph">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jsPlumb"><span class="toc-text">jsPlumb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mxGraph"><span class="toc-text">mxGraph</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>公司项目需要用到绘图框架，绘图部分以前是另一位同事负责，用的是 jsPlumb 框架。由于人员流动，后来这部分我接手了。项目绘图业务需求变得越来越复杂，jsPlumb 已经满足不了我们项目，于是我将目光投到了其他绘图框架。本文主要说说我在使用 jsPlumb 遇到的问题，以及我为什么选择 mxGraph。</p>
+<h2 id="jsPlumb"><a href="#jsPlumb" class="headerlink" title="jsPlumb"></a>jsPlumb</h2><p>jsPlumb 有社区版跟收费版，我们使用的是社区版，下面提到的问题在收费版不一定存在。</p>
+<ol>
+<li>不稳定</li>
+<li>没有内置导航器(收费版是有这个功能的)</li>
+<li>没有智能布局功能</li>
+<li>没有做图层管理</li>
+<li>没有集成截图功能</li>
+<li>画布没有边界自动扩充功能</li>
+</ol>
+<ul>
+<li><p><strong>不稳定</strong></p>
+<p>  主要体现在两点</p>
+<ol>
+<li><p>还原图形偶尔会报一些莫名其秒的错误，还原失败</p>
+</li>
+<li><p>连接线条偶尔会发生线条位置错乱的情况</p>
+<p>这可能是由于我使用 jsPlumb 不当引起的，又或者是框架本身存在问题，到最后都无法定位问题所在。但确实我在网上也看到有同学遇到过相似不稳定的情况。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>没有内置导航器</strong></p>
+<p>  导航器为分两个功能：第一个是放大、缩小，第二是可拖拽改变视口的 minimap。对于放大、缩小这个功能，我们用 css scale 来对整个画布进行缩放。但这个方法的缺点很快就暴露了，缩放后节点位置会发生改变；至于 minimap 要实现的话无异于重复造轮子，团队资源有限，这个功能当时搁置了。</p>
+</li>
+<li><p><strong>智能布局</strong></p>
+<p>  产品有一个需求是将用户 Excel 表中的数据用图形的方式展示，这就需要智能布局功能，不然程序不知道节点应该放置在什么地方才美观。实现这个功能要使用比较复杂的算法，团队资源有限，这个功能当时也搁置了。</p>
+</li>
+<li><p><strong>没有做图层管理</strong></p>
+<p>  jsPlumb 没有做图层管理，导致绘图过程中做不到一些想要的图层叠加效果，要做的话只能自己用 z-index 去控制，这无疑增加了项目维护成本。而且 jsPlumb 的靶点是通过绝对定位附着在节点上的，你需要管理的不仅仅是节点的 z-index 还有靶点的 z-index。</p>
+</li>
+<li><p><strong>没有集成截图功能</strong></p>
+<p>  在用户绘图过程中做了任何改变图的外观的操作我们都需要对当前图形截图，然后同步到服务端作为该图形的封面。jsPlumb 没有内置的截图功能，我们使用 html2canvas 将 html 转换成 canvas 再转换成 png，然后发送到服务端。但 html2canvas 截图时会有1秒左右的卡顿，这降低了用户体验，并不是我们想要的。</p>
+</li>
+<li><p><strong>画布没有边界自动扩充功能</strong></p>
+<p>  由于 jsPlumb 采用的是svg和html混排的做法，节点都是html，画布的边界自然是程序设定的 div 容器。节点多了或者用户想把节点拖远点都需要扩充画布边界，这又成了一个技术难题。当时我们只好用缓兵之计把画布写死成 5000 * 5000。</p>
+</li>
+</ul>
+<p>说了这么多 jsPlumb 的不好，我并没有黑这个框架的意思。毕竟 jsPlumb 现在的 start数、npm下载量都是绘图框架中最高的，肯定有它的过人之处，只是并不适合我们的项目。jsPlumb采用的是svg和html混排的做法，所有节点都是html，所有连线都是单独的svg节点包裹的path元素，对于高度定制化节点样式是非常方便的，我认为静态展示的图形非常适合使用 jsPlumb 绘制。</p>
+<h2 id="mxGraph"><a href="#mxGraph" class="headerlink" title="mxGraph"></a>mxGraph</h2><p>基于以上提及到的种种原因，上年年末我做起了技术调研，希望能找到一个合适我们项目的绘图框架。目标非常明确，我要找的框架能帮助我解决上面所有的问题。一番谷歌筛选后，发现 mxGraph 跟 GoJS 都是能解决我们项目问题的，因为 GoJS 是闭源收费的，最后我选择了 mxGraph。</p>
+<ul>
+<li><p><strong>稳定性</strong></p>
+<p>  <a href="https://www.draw.io/" target="_blank" rel="noopener">draw.io</a> 是一个比较知名的开源绘图网站，就是用 mxGraph 进行开发的。这个绘图工具我偶尔也会使用，还试过出现 BUG 的情况。有 draw.io 当背书，我相信 mxGraph 的稳定性是靠得住的。</p>
+</li>
+<li><p><strong>功能</strong></p>
+<p>  mxGraph 官方提供差不多 90 个例子，从这些例子跟 draw.io 中我可以确定我想要的功能 mxGraph 都可以帮助我实现。导航器、智能布局对于 mxGraph 来说只是一个 API 调用的事。mxGraph 的画布完全基于 svg，自定义节点样式，完全通过 js 完成，比较麻烦。但这对于 mxGraph 自身做图层管理是有好处的，对于开发都来说管理图形层叠也只是几个 API 的事，也不用管什么 z-index 了。由于画布完全基于 svg，不像 jsPlumb 用 html + svg 实现画布，所以 mxGraph 可以做到导出结构化的文档（XML），也不再需要使用 html2canvas 帮助截图，只需要调用几个接口导出当前文档发送给服务端，然后服务端通过 Java 版 (我们项目使用的是 Java，mxGraph 服务端环境还提供有 PHP、C#) mxGraph 将文档转换成图片，这样便解决了截图的问题。画布边界扩充也的问题也不用关心，mxGraph 已经帮助我们做了。再就是 draw.io 已经用 mxGraph 实现了复杂的绘图功能，相信即便以后我们的业务有更复杂的扩展这个框架也是能扛得住的。</p>
+</li>
+<li><p><strong>社区</strong></p>
+<p>mxGraph 在 <a href="https://stackoverflow.com/questions/tagged/mxgraph" target="_blank" rel="noopener">stackoverflow</a> 上有虽然有250个左右相关问题，不过大多数都是回答数比较少，这是我当时比较担忧的一点。</p>
+</li>
+<li><p><strong>兼容性问题</strong></p>
+<p>  项目对浏览器兼容性比较宽松，浏览器兼容性问题不在考虑范围之内。但交互上需要兼容iPad，从 mxGraph 的官方 Demo 中得知 mxGraph 对这方面有做兼容的，可以放心使用。</p>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li>文档不够友好(个人认为与GoJS文档水平差距甚远)，导致上手难度大</li>
+<li>没中文文档，英文不好的同学用起来有点吃力</li>
+<li>相对 jsPlumb 不能使用 css 自定义节点样式，完全通过 js 完成，比较麻烦</li>
+</ul>
+</li>
+</ul>
+<p>经过4个月使用后，确实 mxGraph 帮忙我们解决了上述问题。但同时也遇到的了一些问题，我会在下一篇文章<a href="https://yejinzhan.gitee.io/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">《mxGraph 入门实例教程》</a>中指出。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/45264866" target="_blank" rel="noopener">精读《12 个评估 JS 库你需要关心的事》</a></li>
+<li><a href="https://leungwensen.github.io/blog/2015/frontend-visual-modeling.html" target="_blank" rel="noopener">前端可视化建模技术概览</a></li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://yoursite.com">yejinzhan</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://yoursite.com/2019/03/21/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BB%98%E5%9B%BE%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B_jsPlumb_VS_mxGraph/">http://yoursite.com/2019/03/21/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BB%98%E5%9B%BE%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B_jsPlumb_VS_mxGraph/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2019/04/27/mxGraph%20%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B%E6%95%99%E7%A8%8B/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">mxGraph 入门实例教程</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/03/02/%E8%AE%B0%E4%B8%80%E6%AC%A1%20Vue%20%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84/">
+        <span class="next-text nav-default">记一次 Vue 项目重构</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+      <div id="valine-container"></div>
+      <script>
+        var notify = false
+        var verify = false
+        var visitor = true
+        new Valine({
+          el: '#valine-container',
+          notify: notify,
+          verify: verify,
+          appId: 'uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz',
+          appKey: 'WM7KSHWQxXSOlxGBieADbzMy',
+          lang: 'zh-CN',
+          placeholder: '',
+          avatar: 'monsterid',
+          pageSize: 10,
+          recordIP: true,
+          visitor: visitor
+        });
+       </script>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/jinzhanye" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2018 - 2023<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">yejinzhan</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
