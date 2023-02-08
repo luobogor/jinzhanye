@@ -166,11 +166,11 @@
 <p><img src="/images/node-log-to-ek/img4.png" alt=""></p>
 <p>我们还可以使用 KQL 语法根据关键字过滤日志，比如输入 <code>message: &quot;14&quot;</code> 过滤 <code>message</code> 字段包含 <code>14</code> 的日志。</p>
 <p><img src="/images/node-log-to-ek/img5.png" alt=""></p>
-<h2 id="封装更好用的-SDK"><a href="#封装更好用的-SDK" class="headerlink" title="封装更好用的 SDK"></a>封装更好用的 SDK</h2><p>上文简单封装的 SDK 是不足以应对实际生产环境的，结合实际业务遇到的问题，我们封装了内部使用的日志上报 SDK，欢迎 Start &amp; Fork。</p>
+<h2 id="封装更好用的-SDK"><a href="#封装更好用的-SDK" class="headerlink" title="封装更好用的 SDK"></a>封装更好用的 SDK</h2><p>上文简单封装的 SDK 是不足以应对实际生产环境的，结合实际业务遇到的问题，我们封装了日志上报 <a href="https://github.com/jinzhanye/koa-and-express-es-logger" target="_blank" rel="noopener">SDK</a>，欢迎 Start &amp; Fork。</p>
 <ul>
-<li>@za-node/express-logger：Express 日志上报 SDK。</li>
-<li>@za-node/koa-logger：Koa 日志上报 SDK。</li>
-<li>@za-node/egg-framework：基本 Egg 封装的简单上层框架，主要集成日志上报功能。</li>
+<li>@my-es-logger/express-logger：Express 日志上报 SDK。</li>
+<li>@my-es-logger/koa-logger：Koa 日志上报 SDK。</li>
+<li>@my-es-logger/egg-framework：基本 Egg 封装的简单上层框架，主要集成日志上报功能。</li>
 </ul>
 <p>主要解决了如下问题：</p>
 <ul>
