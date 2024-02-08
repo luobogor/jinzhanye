@@ -13,8 +13,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-<meta name="description" content="小学老师曾经教过我们的「金字塔原理」"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
-<link rel="canonical" href="http://yoursite.com/2020/10/25/structured-expression/"/>
+<meta name="description" content="Cloudfare 常用安全规则配置指南"/><meta name="keywords" content="开发、技术、前端、生活感悟、思考" /><link rel="alternate" href="/default" title="Jz de boke"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://yoursite.com/2024/02/08/cloudfare-rule/"/>
 
 <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
@@ -43,7 +43,7 @@
   window.config = {"leancloud":{"app_id":"uMdsaHD1FNsezx8GJwYPHtfe-gzGzoHsz","app_key":"WM7KSHWQxXSOlxGBieADbzMy"},"toc":true,"fancybox":true,"pjax":"","latex":false};
 </script>
 
-    <title>小学老师曾经教过我们的「金字塔原理」 - Jz de boke</title>
+    <title>Cloudfare 常用安全规则配置指南 - Jz de boke</title>
   <meta name="generator" content="Hexo 4.2.1"></head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -96,27 +96,33 @@
         <div class="content-wrapper">
           <div id="content" class="content"><article class="post">
     <header class="post-header">
-      <h1 class="post-title">小学老师曾经教过我们的「金字塔原理」
+      <h1 class="post-title">Cloudfare 常用安全规则配置指南
         </h1>
 
       <div class="post-meta">
         <span class="post-time">
-          2020-10-25
+          2024-02-08
         </span><span class="post-category">
-            <a href="/categories/%E8%A7%82%E7%82%B9%E4%B8%8E%E6%84%9F%E6%83%B3/">观点与感想</a>
+            <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
             </span>
         <span class="post-visits"
-             data-url="/2020/10/25/structured-expression/"
-             data-title="小学老师曾经教过我们的「金字塔原理」">
+             data-url="/2024/02/08/cloudfare-rule/"
+             data-title="Cloudfare 常用安全规则配置指南">
           阅读次数 0
         </span>
         </div>
     </header>
 
-    <div class="post-content"><p><img src="https://gitee.com/yejinzhan/images/raw/master/20201031145938.jpeg" alt=""></p>
-<p>这周推荐一本书 - <a href="https://book.douban.com/subject/4882120" target="_blank" rel="noopener">《金字塔原理》</a>，讲的是如何用「结构化」的方式去思考、表达，对于日常工作很有帮助。</p>
-<p>为什么推荐这本书呢？事因是这样的，这周梳理接入小程序第三方平台流程花了大概一天半时间，最后把流程弄清楚发现其实并不复杂，如果能更快地理解文档内容可能半天就可以梳理完。看微信的文档有些难以理解，但就是不清楚为什么难以理解，后来想来想去总算是发现了些问题。一般的技术文档像 Vue、React 都会有两份文档，一份叫「教程」就是对库的使用做一个完整的说明，看完后就可以简单做个 Todo List 了。一份叫「API」，也就是字典，哪个 API 不懂就去查一查，平时没事不会去看。反观微信第三方平台接入的文档就不太走心，「教程」部分与「API」部分糅杂，读者在阅读「教程」的情况下防不胜防就来句「关于 xx 内容参考 xx（一个跳转链接）」，这就导致读者在没有了解整体流程的情况下在细枝末节间跳来跳去，阻碍读者理解。</p>
-<p>那么文档或者平时与人沟通怎样才能更好地表达呢？《金字塔原理》一书讲的就是如何使用「结构化表达」来解决这个问题。「结构化表达」简单来说就是小学老师指导写作文的时候经常提的「总分总」结构，重要的内容放前面，先把整体大纲（比如事情的背景、接下来要哪些模块）简单讲一遍。后面内容围绕中心内容展示详细讲，每段开头第一句作为中心句。内容层层递进，用程序员之间的话来说就是要用「广度遍历」不要用「深度遍历」。这样子受众在接受我们信息的时候就始终是从全局上去理解我们的内容，更加容易理解我们传达的信息。</p>
+    <div class="post-content"><p>最近使用 Cloudfare 做了一些安全配置，分享一下。</p>
+<p>WAF 添加跳过规则，设置某些合法爬虫可以访问。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(cf.client.bot) or (http.user_agent contains &quot;duckduckgo&quot;) or (http.user_agent contains &quot;facebookexternalhit&quot;) or (http.user_agent contains &quot;Feedfetcher-Google&quot;) or (http.user_agent contains &quot;LinkedInBot&quot;) or (http.user_agent contains &quot;Mediapartners-Google&quot;) or (http.user_agent contains &quot;msnbot&quot;) or (http.user_agent contains &quot;Slackbot&quot;) or (http.user_agent contains &quot;TwitterBot&quot;) or (http.user_agent contains &quot;ia_archive&quot;) or (http.user_agent contains &quot;APIs-Google&quot;) or (http.user_agent contains &quot;AdsBot-Google&quot;) or (http.user_agent contains &quot;Mediapartners-Google&quot;) or (http.user_agent contains &quot;Googlebot&quot;) or (http.user_agent contains &quot;Mediapartners-Google&quot;) or (http.user_agent contains &quot;FeedFetcher-Google&quot;) or (http.user_agent contains &quot;Google-Read-Aloud&quot;) or (http.user_agent contains &quot;DuplexWeb-Google&quot;) or (http.user_agent contains &quot;googleweblight&quot;) or (http.user_agent contains &quot;Storebot-Google&quot;) or (http.user_agent contains &quot;Google-Site-Verification&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/cloudfare-rule/img.png" alt=""></p>
+<p>WAF 添加托管质询规则，防止恶意访问。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(cf.threat_score ge 5 and not cf.client.bot) or (not http.request.version in &#123;&quot;HTTP&#x2F;1.2&quot; &quot;HTTP&#x2F;2&quot; &quot;HTTP&#x2F;3&quot; &quot;SPDY&#x2F;3.1&quot;&#125;) or (not http.user_agent contains &quot;Mozilla&#x2F;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/cloudfare-rule/img_1.png" alt=""></p>
+<p>开启安全性 -&gt; 自动程序。</p>
 
       </div>
       <div class="post-copyright">
@@ -126,7 +132,7 @@
     </p>
     <p class="copyright-item">
       <span>原文链接: </span>
-      <a href="http://yoursite.com/2020/10/25/structured-expression/">http://yoursite.com/2020/10/25/structured-expression/</a>
+      <a href="http://yoursite.com/2024/02/08/cloudfare-rule/">http://yoursite.com/2024/02/08/cloudfare-rule/</a>
     </p>
     <p class="copyright-item">
       <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
@@ -134,13 +140,8 @@
   </div>
       <footer class="post-footer">
         
-        <nav class="post-nav"><a class="prev" href="/2020/11/20/cookie-same-site-recommend/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">Cookie 的 SameSite 属性一些资料推荐</span>
-        <span class="prev-text nav-mobile">上一篇</span>
-      </a>
-    <a class="next" href="/2020/08/22/the-effective-executive/">
-        <span class="next-text nav-default">如何卓有成效---《卓有成效的管理者》摘抄</span>
+        <nav class="post-nav"><a class="next" href="/2023/10/29/wechat-public-account-money/">
+        <span class="next-text nav-default">0到1副业公众号项目有感</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
